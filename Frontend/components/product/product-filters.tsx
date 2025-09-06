@@ -25,6 +25,17 @@ const categories = [
   "Home & Garden",
   "Toys",
   "Art & Crafts",
+  "Automotive",
+  "Beauty & Health",
+  "Jewelry & Accessories",
+  "Musical Instruments",
+  "Office Supplies",
+  "Pet Supplies",
+  "Travel & Luggage",
+  "Baby & Kids",
+  "Collectibles",
+  "Antiques",
+  "Tools & Equipment",
 ]
 
 const sortOptions = [

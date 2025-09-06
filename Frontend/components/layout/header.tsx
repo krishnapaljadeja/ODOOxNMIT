@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useCart } from "@/components/cart/cart-context"
 import { useWishlist } from "@/components/wishlist/wishlist-context"
+import { useAuth } from "@/components/auth/auth-context"
 
 interface HeaderProps {
   onSearch?: (query: string) => void
@@ -25,8 +26,9 @@ interface HeaderProps {
 export function Header({ onSearch }: HeaderProps) {
   const [searchQuery, setSearchQuery] = useState("")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { items = [] } = useCart()
+  const { state: cartState } = useCart()
   const { wishlistItems } = useWishlist()
+  const { user, logout } = useAuth()
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
@@ -83,38 +85,52 @@ export function Header({ onSearch }: HeaderProps) {
             <Button variant="ghost" size="icon" className="relative" asChild>
               <Link href="/cart">
                 <ShoppingCart className="h-5 w-5" />
-                {items.length > 0 && (
+                {cartState.items.length > 0 && (
                   <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {items.length}
+                    {cartState.items.length}
                   </span>
                 )}
               </Link>
             </Button>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="/diverse-user-avatars.png" alt="User" />
-                    <AvatarFallback>
-                      <User className="h-4 w-4" />
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard">Profile</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/orders">My Orders</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/login">Logout</Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            {/* 
+              Fix: The dropdown menu is not opening because the Button inside DropdownMenuTrigger is likely stealing focus or event propagation is broken.
+              Solution: Use a plain div or span as the trigger, and ensure DropdownMenuTrigger is not wrapped in a Button.
+              Also, ensure the Avatar is clickable and styled as a button for accessibility.
+            */}
+            {user && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <span
+                    tabIndex={0}
+                    className="relative h-8 w-8 rounded-full flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary"
+                    aria-label="Open user menu"
+                  >
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user?.avatar || "/placeholder-user.jpg"} alt={user?.name || "User"} />
+                      <AvatarFallback>
+                        <User className="h-4 w-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                  </span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/orders">
+                      <Package className="h-4 w-4 mr-2" />
+                      Orders
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout}>
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -167,9 +183,9 @@ export function Header({ onSearch }: HeaderProps) {
                 <Button variant="ghost" size="icon" className="relative" asChild>
                   <Link href="/cart">
                     <ShoppingCart className="h-5 w-5" />
-                    {items.length > 0 && (
+                    {cartState.items.length > 0 && (
                       <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {items.length}
+                        {cartState.items.length}
                       </span>
                     )}
                   </Link>

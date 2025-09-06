@@ -9,6 +9,7 @@ import { Suspense } from "react"
 import { CartProvider } from "@/components/cart/cart-context"
 import { WishlistProvider } from "@/components/wishlist/wishlist-context"
 import { OrdersProvider } from "@/components/orders/orders-context"
+import { AuthProvider } from "@/components/auth/auth-context"
 import "./globals.css"
 
 const spaceGrotesk = Space_Grotesk({
@@ -39,11 +40,13 @@ export default function RootLayout({
       <body className={`font-sans ${spaceGrotesk.variable} ${dmSans.variable} ${GeistMono.variable} antialiased`}>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
-            <WishlistProvider>
-              <OrdersProvider>
-                <CartProvider>{children}</CartProvider>
-              </OrdersProvider>
-            </WishlistProvider>
+            <AuthProvider>
+              <WishlistProvider>
+                <OrdersProvider>
+                  <CartProvider>{children}</CartProvider>
+                </OrdersProvider>
+              </WishlistProvider>
+            </AuthProvider>
           </ThemeProvider>
         </Suspense>
         <Analytics />

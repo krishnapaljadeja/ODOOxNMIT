@@ -40,17 +40,6 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
             <p className="text-muted-foreground text-sm mt-1">Sustainable Second-Hand Marketplace</p>
           </motion.div>
 
-          {/* Auth Form Header */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="text-center mb-6"
-          >
-            <h2 className="font-heading text-xl font-semibold text-foreground">{title}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{subtitle}</p>
-          </motion.div>
-
           {/* Form Content */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}>
             {children}

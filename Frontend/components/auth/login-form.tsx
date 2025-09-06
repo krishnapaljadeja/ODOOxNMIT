@@ -3,10 +3,12 @@ import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Mail, Lock } from "lucide-react"
+import { useAuth } from "@/components/auth/auth-context"
 
 export function LoginForm() {
   const [formData, setFormData] = useState({
@@ -16,6 +18,8 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
+  const { login } = useAuth()
+  const router = useRouter()
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -43,11 +47,18 @@ export function LoginForm() {
 
     setIsLoading(true)
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const success = await login(formData.email, formData.password)
+      if (success) {
+        router.push("/")
+      } else {
+        setErrors({ general: "Invalid email or password" })
+      }
+    } catch (error) {
+      setErrors({ general: "An error occurred. Please try again." })
+    } finally {
       setIsLoading(false)
-      console.log("Login attempt:", formData)
-    }, 2000)
+    }
   }
 
   const handleInputChange = (field: string, value: string) => {
@@ -59,6 +70,17 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* General Error */}
+      {errors.general && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-3 bg-destructive/10 border border-destructive/20 rounded-md"
+        >
+          <p className="text-sm text-destructive">{errors.general}</p>
+        </motion.div>
+      )}
+
       {/* Email Field */}
       <div className="space-y-2">
         <Label htmlFor="email" className="text-sm font-medium text-foreground">

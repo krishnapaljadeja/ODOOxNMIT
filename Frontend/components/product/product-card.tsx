@@ -4,6 +4,7 @@ import { Heart, ShoppingCart } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { useWishlist } from "@/components/wishlist/wishlist-context"
 
 interface Product {
   id: string
@@ -25,6 +26,9 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onAddToCart, onToggleLike }: ProductCardProps) {
+  const { isInWishlist } = useWishlist()
+  const isLiked = isInWishlist(product.id)
+  
   const discountPercentage = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0
@@ -56,7 +60,7 @@ export function ProductCard({ product, onAddToCart, onToggleLike }: ProductCardP
             className="absolute bottom-2 right-2 bg-card/90 backdrop-blur-sm hover:bg-card"
             onClick={() => onToggleLike?.(product.id)}
           >
-            <Heart className={`h-4 w-4 ${product.isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
+            <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
           </Button>
         </div>
 

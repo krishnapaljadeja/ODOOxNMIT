@@ -3,10 +3,12 @@ import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Eye, EyeOff, Mail, Lock, User } from "lucide-react"
+import { useAuth } from "@/components/auth/auth-context"
 
 export function SignupForm() {
   const [formData, setFormData] = useState({
@@ -19,6 +21,8 @@ export function SignupForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
+  const { signup } = useAuth()
+  const router = useRouter()
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -56,11 +60,18 @@ export function SignupForm() {
 
     setIsLoading(true)
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const success = await signup(formData.email, formData.password, formData.name)
+      if (success) {
+        router.push("/")
+      } else {
+        setErrors({ general: "Failed to create account. Please try again." })
+      }
+    } catch (error) {
+      setErrors({ general: "An error occurred. Please try again." })
+    } finally {
       setIsLoading(false)
-      console.log("Signup attempt:", formData)
-    }, 2000)
+    }
   }
 
   const handleInputChange = (field: string, value: string) => {
@@ -72,6 +83,17 @@ export function SignupForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* General Error */}
+      {errors.general && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-3 bg-destructive/10 border border-destructive/20 rounded-md"
+        >
+          <p className="text-sm text-destructive">{errors.general}</p>
+        </motion.div>
+      )}
+
       {/* Name Field */}
       <div className="space-y-2">
         <Label htmlFor="name" className="text-sm font-medium text-foreground">
