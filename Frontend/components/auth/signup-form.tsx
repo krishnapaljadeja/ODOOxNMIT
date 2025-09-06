@@ -1,85 +1,89 @@
-"use client"
-import type React from "react"
-import { useState } from "react"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Eye, EyeOff, Mail, Lock, User } from "lucide-react"
-import { useAuth } from "@/components/auth/auth-context"
+"use client";
+import type React from "react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { useAuth } from "@/components/auth/auth-context";
 
 export function SignupForm() {
   const [formData, setFormData] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [isLoading, setIsLoading] = useState(false)
-  const { signup } = useAuth()
-  const router = useRouter()
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const { signup } = useAuth();
+  const router = useRouter();
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required"
+    if (!formData.username.trim()) {
+      newErrors.username = "Username is required";
     }
 
     if (!formData.email) {
-      newErrors.email = "Email is required"
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email"
+      newErrors.email = "Please enter a valid email";
     }
 
     if (!formData.password) {
-      newErrors.password = "Password is required"
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters"
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password"
+      newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match"
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
-      const success = await signup(formData.email, formData.password, formData.name)
+      const success = await signup(
+        formData.email,
+        formData.password,
+        formData.username
+      );
       if (success) {
-        router.push("/")
+        router.push("/");
       } else {
-        setErrors({ general: "Failed to create account. Please try again." })
+        setErrors({ general: "Failed to create account. Please try again." });
       }
     } catch (error) {
-      setErrors({ general: "An error occurred. Please try again." })
+      setErrors({ general: "An error occurred. Please try again." });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: "" }))
+      setErrors((prev) => ({ ...prev, [field]: "" }));
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -94,29 +98,32 @@ export function SignupForm() {
         </motion.div>
       )}
 
-      {/* Name Field */}
+      {/* Username Field */}
       <div className="space-y-2">
-        <Label htmlFor="name" className="text-sm font-medium text-foreground">
-          Full Name
+        <Label
+          htmlFor="username"
+          className="text-sm font-medium text-foreground"
+        >
+          Username
         </Label>
         <div className="relative">
           <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            id="name"
+            id="username"
             type="text"
-            placeholder="Enter your full name"
-            value={formData.name}
-            onChange={(e) => handleInputChange("name", e.target.value)}
-            className={`pl-10 ${errors.name ? "border-destructive" : ""}`}
+            placeholder="Enter your username"
+            value={formData.username}
+            onChange={(e) => handleInputChange("username", e.target.value)}
+            className={`pl-10 ${errors.username ? "border-destructive" : ""}`}
           />
         </div>
-        {errors.name && (
+        {errors.username && (
           <motion.p
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-sm text-destructive"
           >
-            {errors.name}
+            {errors.username}
           </motion.p>
         )}
       </div>
@@ -150,7 +157,10 @@ export function SignupForm() {
 
       {/* Password Field */}
       <div className="space-y-2">
-        <Label htmlFor="password" className="text-sm font-medium text-foreground">
+        <Label
+          htmlFor="password"
+          className="text-sm font-medium text-foreground"
+        >
           Password
         </Label>
         <div className="relative">
@@ -161,14 +171,20 @@ export function SignupForm() {
             placeholder="Create a password"
             value={formData.password}
             onChange={(e) => handleInputChange("password", e.target.value)}
-            className={`pl-10 pr-10 ${errors.password ? "border-destructive" : ""}`}
+            className={`pl-10 pr-10 ${
+              errors.password ? "border-destructive" : ""
+            }`}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
-            {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
           </button>
         </div>
         {errors.password && (
@@ -184,7 +200,10 @@ export function SignupForm() {
 
       {/* Confirm Password Field */}
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
+        <Label
+          htmlFor="confirmPassword"
+          className="text-sm font-medium text-foreground"
+        >
           Confirm Password
         </Label>
         <div className="relative">
@@ -194,15 +213,23 @@ export function SignupForm() {
             type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm your password"
             value={formData.confirmPassword}
-            onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-            className={`pl-10 pr-10 ${errors.confirmPassword ? "border-destructive" : ""}`}
+            onChange={(e) =>
+              handleInputChange("confirmPassword", e.target.value)
+            }
+            className={`pl-10 pr-10 ${
+              errors.confirmPassword ? "border-destructive" : ""
+            }`}
           />
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
-            {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            {showConfirmPassword ? (
+              <EyeOff className="h-4 w-4" />
+            ) : (
+              <Eye className="h-4 w-4" />
+            )}
           </button>
         </div>
         {errors.confirmPassword && (
@@ -217,7 +244,11 @@ export function SignupForm() {
       </div>
 
       {/* Submit Button */}
-      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="pt-2">
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        className="pt-2"
+      >
         <Button
           type="submit"
           disabled={isLoading}
@@ -226,7 +257,11 @@ export function SignupForm() {
           {isLoading ? (
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+              transition={{
+                duration: 1,
+                repeat: Number.POSITIVE_INFINITY,
+                ease: "linear",
+              }}
               className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full"
             />
           ) : (
@@ -239,11 +274,14 @@ export function SignupForm() {
       <div className="text-center pt-4">
         <p className="text-sm text-muted-foreground">
           Already have an account?{" "}
-          <Link href="/login" className="text-primary hover:text-primary/80 font-medium transition-colors">
+          <Link
+            href="/login"
+            className="text-primary hover:text-primary/80 font-medium transition-colors"
+          >
             Sign in here
           </Link>
         </p>
       </div>
     </form>
-  )
+  );
 }

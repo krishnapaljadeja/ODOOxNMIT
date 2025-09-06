@@ -36,7 +36,7 @@ app.use((req, res, next) => {
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: process.env.FRONTEND_URL || "http://localhost:3001",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 };
