@@ -7,6 +7,7 @@ import { WishlistProvider } from "@/components/wishlist/wishlist-context"
 import { AuthProvider } from "@/components/auth/auth-context"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
+import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
   title: "EcoFinds - Sustainable Marketplace",
@@ -31,6 +32,8 @@ export default function RootLayout({
             </AuthProvider>
           </ThemeProvider>
         </Suspense>
+
+        <Toaster />
         <Analytics />
       </body>
     </html>

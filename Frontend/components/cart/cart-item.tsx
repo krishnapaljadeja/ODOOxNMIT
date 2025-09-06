@@ -22,14 +22,22 @@ interface CartItemProps {
 }
 
 export function CartItemComponent({ item }: CartItemProps) {
-  const { dispatch } = useCart()
+  const { updateCartItemQuantity, removeFromCart } = useCart()
 
-  const updateQuantity = (newQuantity: number) => {
-    dispatch({ type: "UPDATE_QUANTITY", payload: { id: item.id, quantity: newQuantity } })
+  const updateQuantity = async (newQuantity: number) => {
+    try {
+      await updateCartItemQuantity(item.id, newQuantity)
+    } catch (error) {
+      console.error("Failed to update quantity:", error)
+    }
   }
 
-  const removeItem = () => {
-    dispatch({ type: "REMOVE_ITEM", payload: item.id })
+  const removeItem = async () => {
+    try {
+      await removeFromCart(item.id)
+    } catch (error) {
+      console.error("Failed to remove item:", error)
+    }
   }
 
   return (

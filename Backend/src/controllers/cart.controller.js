@@ -64,9 +64,9 @@ export const addToCart = async (req, res) => {
       return res
         .status(200)
         .json(
-          new ApiResponse(200, "Item quantity updated in cart", {
+          new ApiResponse(200,{
             item: updatedItem,
-          })
+          },"Item quantity updated in cart")
         );
     } else {
       // Add new item
@@ -114,14 +114,16 @@ export const getCart = async (req, res) => {
         },
       },
     });
+    
 
     if (!cart) {
       return res
         .status(200)
         .json(
-          new ApiResponse(200, "Cart is empty", {
-            cart: { items: [], total: 0 },
-          })
+          new ApiResponse(200,{
+              cart: { items: [], total: 0 },
+            }, "Cart is empty",
+          )
         );
     }
 
@@ -131,14 +133,14 @@ export const getCart = async (req, res) => {
     }, 0);
 
     return res.status(200).json(
-      new ApiResponse(200, "Cart retrieved successfully", {
+      new ApiResponse(200, {
         cart: {
           id: cart.id,
           items: cart.items,
           total: parseFloat(total.toFixed(2)),
           itemCount: cart.items.length,
         },
-      })
+      }, "Cart retrieved successfully")
     );
   } catch (err) {
     console.error("Error fetching cart:", err);
