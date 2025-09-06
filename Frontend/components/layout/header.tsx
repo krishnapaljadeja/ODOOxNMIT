@@ -93,12 +93,12 @@ export function Header({ onSearch }: HeaderProps) {
               className="hover:bg-primary/10 transition-colors duration-300 font-medium"
               asChild
             >
-              <Link href="/dashboard" className="flex items-center">
+              <Link href="/products" className="flex items-center">
                 <Package className="h-4 w-4 mr-2 text-primary" />
                 Products
               </Link>
             </Button>
-            
+
             <ThemeToggle />
 
             <Button
@@ -183,32 +183,48 @@ export function Header({ onSearch }: HeaderProps) {
                   sideOffset={8}
                 >
                   <div className="px-4 py-3 border-b border-border/50">
-                    <p className="text-sm font-medium text-foreground">{user?.username || "User"}</p>
-                    <p className="text-xs text-muted-foreground truncate">{user?.email || "user@example.com"}</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {user?.username || "User"}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {user?.email || "user@example.com"}
+                    </p>
                   </div>
 
-                  <DropdownMenuItem asChild className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200">
+                  <DropdownMenuItem
+                    asChild
+                    className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200"
+                  >
                     <Link href="/profile" className="flex items-center">
                       <User className="h-4 w-4 mr-2 text-primary" />
                       <span>Profile</span>
                     </Link>
                   </DropdownMenuItem>
-                  
-                  <DropdownMenuItem asChild className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200">
-                    <Link href="/dashboard" className="flex items-center">
+
+                  {/* <DropdownMenuItem
+                    asChild
+                    className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200"
+                  >
+                    <Link href="/products" className="flex items-center">
                       <Package className="h-4 w-4 mr-2 text-primary" />
                       <span>Products</span>
                     </Link>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
 
-                  <DropdownMenuItem asChild className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200">
+                  <DropdownMenuItem
+                    asChild
+                    className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200"
+                  >
                     <Link href="/my-listings" className="flex items-center">
                       <List className="h-4 w-4 mr-2 text-primary" />
                       <span>My Listings</span>
                     </Link>
                   </DropdownMenuItem>
 
-                  <DropdownMenuItem asChild className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200">
+                  <DropdownMenuItem
+                    asChild
+                    className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200"
+                  >
                     <Link href="/purchases" className="flex items-center">
                       <Package className="h-4 w-4 mr-2 text-primary" />
                       <span>Orders</span>
@@ -224,7 +240,11 @@ export function Header({ onSearch }: HeaderProps) {
                     <motion.span
                       className="flex items-center w-full"
                       whileHover={{ x: 2 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 400,
+                        damping: 10,
+                      }}
                     >
                       Logout
                     </motion.span>
@@ -235,15 +255,26 @@ export function Header({ onSearch }: HeaderProps) {
           </div>
 
           {/* Mobile Menu Button */}
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="md:hidden">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="md:hidden"
+          >
             <Button
               variant="outline"
               size="icon"
               className="bg-card/60 backdrop-blur-sm border-primary/10 shadow-md hover:shadow-lg hover:bg-card/80 transition-all duration-300"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              <motion.div animate={{ rotate: isMobileMenuOpen ? 90 : 0 }} transition={{ duration: 0.2 }}>
-                {isMobileMenuOpen ? <X className="h-5 w-5 text-primary" /> : <Menu className="h-5 w-5 text-primary" />}
+              <motion.div
+                animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-5 w-5 text-primary" />
+                ) : (
+                  <Menu className="h-5 w-5 text-primary" />
+                )}
               </motion.div>
             </Button>
           </motion.div>
@@ -276,13 +307,21 @@ export function Header({ onSearch }: HeaderProps) {
               {/* Mobile Navigation Links */}
               <div className="space-y-4 px-4">
                 <div className="flex items-center justify-between bg-background/50 p-3 rounded-xl border border-primary/10 shadow-sm">
-                  <p className="text-sm font-medium text-foreground">Quick Actions</p>
+                  <p className="text-sm font-medium text-foreground">
+                    Quick Actions
+                  </p>
                   <div className="flex items-center space-x-2">
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
                       <ThemeToggle />
                     </motion.div>
 
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
                       <Button
                         variant="outline"
                         size="icon"
@@ -304,7 +343,10 @@ export function Header({ onSearch }: HeaderProps) {
                       </Button>
                     </motion.div>
 
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <motion.div
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
                       <Button
                         variant="outline"
                         size="icon"
@@ -342,8 +384,12 @@ export function Header({ onSearch }: HeaderProps) {
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium truncate">{user.username}</p>
-                        <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                        <p className="text-sm font-medium truncate">
+                          {user.username}
+                        </p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {user.email}
+                        </p>
                       </div>
                       <div className="ml-auto">
                         <span className="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-600 border border-green-500/30">
@@ -353,46 +399,67 @@ export function Header({ onSearch }: HeaderProps) {
                     </div>
 
                     <div className="grid grid-cols-2 gap-2">
-                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
                         <Button
                           variant="outline"
                           asChild
                           className="w-full bg-background/50 border-primary/10 shadow-sm hover:shadow-md transition-all duration-300 group"
                         >
-                          <Link href="/dashboard" className="flex items-center justify-center">
+                          <Link
+                            href="/profile"
+                            className="flex items-center justify-center"
+                          >
                             <User className="h-4 w-4 mr-2 text-primary" />
                             <span>Profile</span>
                           </Link>
                         </Button>
                       </motion.div>
 
-                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
                         <Button
                           variant="outline"
                           asChild
                           className="w-full bg-background/50 border-primary/10 shadow-sm hover:shadow-md transition-all duration-300 group"
                         >
-                          <Link href="/my-listings" className="flex items-center justify-center">
+                          <Link
+                            href="/my-listings"
+                            className="flex items-center justify-center"
+                          >
                             <List className="h-4 w-4 mr-2 text-primary" />
                             <span>Listings</span>
                           </Link>
                         </Button>
                       </motion.div>
 
-                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
                         <Button
                           variant="outline"
                           asChild
                           className="w-full bg-background/50 border-primary/10 shadow-sm hover:shadow-md transition-all duration-300 group"
                         >
-                          <Link href="/purchases" className="flex items-center justify-center">
+                          <Link
+                            href="/purchases"
+                            className="flex items-center justify-center"
+                          >
                             <Package className="h-4 w-4 mr-2 text-primary" />
                             <span>Orders</span>
                           </Link>
                         </Button>
                       </motion.div>
 
-                      <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
                         <Button
                           variant="outline"
                           className="w-full bg-background/50 border-red-500/10 text-red-500 shadow-sm hover:shadow-md hover:bg-red-500/10 transition-all duration-300 group"

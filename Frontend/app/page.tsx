@@ -1,35 +1,35 @@
-"use client"
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Plus, Sparkles, Leaf, Heart } from "lucide-react"
-import Link from "next/link"
-import { Header } from "@/components/layout/header"
-import { ProductGrid } from "@/components/product/product-grid"
-import { ProductFilters } from "@/components/product/product-filters"
-import { Button } from "@/components/ui/button"
-import { ProtectedRoute } from "@/components/auth/protected-route"
+"use client";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Plus, Sparkles, Leaf, Heart } from "lucide-react";
+import Link from "next/link";
+import { Header } from "@/components/layout/header";
+import { ProductGrid } from "@/components/product/product-grid";
+import { ProductFilters } from "@/components/product/product-filters";
+import { Button } from "@/components/ui/button";
+import { ProtectedRoute } from "@/components/auth/protected-route";
 
 export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("All")
-  const [sortBy, setSortBy] = useState("newest")
-  const [groupBy, setGroupBy] = useState("none")
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortBy, setSortBy] = useState("newest");
+  const [groupBy, setGroupBy] = useState("none");
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query)
-  }
+    setSearchQuery(query);
+  };
 
   const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category)
-  }
+    setSelectedCategory(category);
+  };
 
   const handleSortChange = (sort: string) => {
-    setSortBy(sort)
-  }
+    setSortBy(sort);
+  };
 
   const handleGroupByChange = (group: string) => {
-    setGroupBy(group)
-  }
+    setGroupBy(group);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -40,7 +40,7 @@ export default function HomePage() {
         delayChildren: 0.2,
       },
     },
-  }
+  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -52,7 +52,7 @@ export default function HomePage() {
         ease: [0.25, 0.46, 0.45, 0.94],
       },
     },
-  }
+  };
 
   const floatingIconVariants = {
     animate: {
@@ -64,7 +64,7 @@ export default function HomePage() {
         ease: "easeInOut",
       },
     },
-  }
+  };
 
   return (
     <ProtectedRoute>
@@ -152,12 +152,16 @@ export default function HomePage() {
                   <span className="relative">Sustainable</span>
                 </span>
                 <br />
-                <motion.span 
+                <motion.span
                   className="bg-gradient-to-r from-primary to-green-500 bg-clip-text text-transparent relative inline-block"
-                  animate={{ 
+                  animate={{
                     backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
                   }}
-                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                  transition={{
+                    duration: 10,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
                   style={{ backgroundSize: "200% 200%" }}
                 >
                   Treasures
@@ -169,25 +173,29 @@ export default function HomePage() {
                 className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto text-balance leading-relaxed mb-10 relative"
               >
                 <span className="absolute -inset-1 blur-3xl bg-primary/5 rounded-full"></span>
-                <span className="relative">Find unique, pre-loved items and give them a new life while reducing environmental impact</span>
+                <span className="relative">
+                  Find unique, pre-loved items and give them a new life while
+                  reducing environmental impact
+                </span>
               </motion.p>
-              
-              <motion.div 
-                variants={itemVariants}
-                className="mt-8"
-              >
-                <Link href="/dashboard">
-                  <Button 
-                    size="lg" 
+
+              <motion.div variants={itemVariants} className="mt-8">
+                <Link href="/products">
+                  <Button
+                    size="lg"
                     className="bg-gradient-to-r from-primary to-green-500 hover:from-green-500 hover:to-primary text-primary-foreground px-8 py-6 text-lg font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group relative overflow-hidden"
                   >
                     <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-110 rounded-full blur-md"></span>
                     <span className="relative flex items-center">
                       Explore Products
-                      <motion.span 
+                      <motion.span
                         className="ml-2"
                         animate={{ x: [0, 5, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
                       >
                         →
                       </motion.span>
@@ -196,11 +204,29 @@ export default function HomePage() {
                 </Link>
               </motion.div>
 
-              <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-8 mt-16">
+              <motion.div
+                variants={itemVariants}
+                className="flex flex-wrap justify-center gap-8 mt-16"
+              >
                 {[
-                  { number: "10K+", label: "Happy Customers", icon: "👥", color: "from-primary/20 to-primary/5" },
-                  { number: "50K+", label: "Items Saved", icon: "🌱", color: "from-green-500/20 to-green-500/5" },
-                  { number: "95%", label: "Satisfaction Rate", icon: "⭐", color: "from-yellow-500/20 to-yellow-500/5" },
+                  {
+                    number: "10K+",
+                    label: "Happy Customers",
+                    icon: "👥",
+                    color: "from-primary/20 to-primary/5",
+                  },
+                  {
+                    number: "50K+",
+                    label: "Items Saved",
+                    icon: "🌱",
+                    color: "from-green-500/20 to-green-500/5",
+                  },
+                  {
+                    number: "95%",
+                    label: "Satisfaction Rate",
+                    icon: "⭐",
+                    color: "from-yellow-500/20 to-yellow-500/5",
+                  },
                 ].map((stat, index) => (
                   <motion.div
                     key={stat.label}
@@ -208,19 +234,28 @@ export default function HomePage() {
                     whileHover={{ scale: 1.05, y: -5 }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   >
-                    <div className={`absolute inset-0 rounded-2xl bg-gradient-to-b ${stat.color} blur-xl group-hover:blur-2xl transition-all duration-300 opacity-70`}></div>
+                    <div
+                      className={`absolute inset-0 rounded-2xl bg-gradient-to-b ${stat.color} blur-xl group-hover:blur-2xl transition-all duration-300 opacity-70`}
+                    ></div>
                     <div className="relative bg-card/30 backdrop-blur-sm border border-primary/10 rounded-2xl px-8 py-4 shadow-lg group-hover:shadow-xl transition-all duration-300">
-                      <div className="text-3xl md:text-4xl mb-2">{stat.icon}</div>
+                      <div className="text-3xl md:text-4xl mb-2">
+                        {stat.icon}
+                      </div>
                       <div className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-green-500 bg-clip-text text-transparent mb-2">
                         <motion.span
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.5 + index * 0.2, duration: 0.8 }}
+                          transition={{
+                            delay: 0.5 + index * 0.2,
+                            duration: 0.8,
+                          }}
                         >
                           {stat.number}
                         </motion.span>
                       </div>
-                      <div className="text-sm font-medium text-foreground/80">{stat.label}</div>
+                      <div className="text-sm font-medium text-foreground/80">
+                        {stat.label}
+                      </div>
                     </div>
                   </motion.div>
                 ))}
@@ -252,9 +287,9 @@ export default function HomePage() {
           }}
           className="fixed bottom-8 right-8 z-50"
         >
-          <motion.div 
-            whileHover={{ scale: 1.1 }} 
-            whileTap={{ scale: 0.95 }} 
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
             className="relative group"
           >
             {/* Multiple pulsing background effects */}
@@ -290,8 +325,8 @@ export default function HomePage() {
               className="relative rounded-full shadow-2xl bg-gradient-to-r from-primary to-green-500 hover:from-green-500 hover:to-primary text-primary-foreground h-16 w-16 p-0 border-2 border-primary-foreground/20 backdrop-blur-sm transition-all duration-500 group-hover:shadow-primary/20 group-hover:shadow-2xl"
             >
               <Link href="/add-product">
-                <motion.div 
-                  whileHover={{ rotate: 90 }} 
+                <motion.div
+                  whileHover={{ rotate: 90 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   className="flex items-center justify-center"
                 >
@@ -300,7 +335,7 @@ export default function HomePage() {
                 <span className="sr-only">Add new product</span>
               </Link>
             </Button>
-            
+
             {/* Tooltip */}
             <div className="absolute -top-10 right-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
               <div className="bg-card/90 backdrop-blur-sm text-foreground px-3 py-1 rounded-lg shadow-lg text-sm whitespace-nowrap">
@@ -311,5 +346,5 @@ export default function HomePage() {
         </motion.div>
       </div>
     </ProtectedRoute>
-  )
+  );
 }

@@ -1,37 +1,24 @@
-"use client"
-import { motion } from "framer-motion"
-import { User, Settings, Shield, Bell, Key, Download } from "lucide-react"
-import { Header } from "@/components/layout/header"
-import { ProfileSection } from "@/components/dashboard/profile-section"
-import { StatsOverview } from "@/components/dashboard/stats-overview"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { useState } from "react"
+"use client";
+import { motion } from "framer-motion";
+import {
+  Package,
+  TrendingUp,
+  Users,
+  DollarSign,
+  ShoppingCart,
+  Heart,
+  Eye,
+  Plus,
+} from "lucide-react";
+import { Header } from "@/components/layout/header";
+import { StatsOverview } from "@/components/dashboard/stats-overview";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useAuth } from "@/components/auth/auth-context";
 
-export default function ProductsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [sortBy, setSortBy] = useState("newest");
-  const [groupBy, setGroupBy] = useState("none");
-  const [showFilters, setShowFilters] = useState(false);
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
-  };
-
-  const handleSortChange = (sort: string) => {
-    setSortBy(sort);
-  };
-
-  const handleGroupByChange = (group: string) => {
-    setGroupBy(group);
-  };
+export default function DashboardPage() {
+  const { user } = useAuth();
 
   // Animation variants
   const containerVariants = {
@@ -72,7 +59,8 @@ export default function ProductsPage() {
           <div className="flex flex-col gap-2">
             <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
             <p className="text-muted-foreground">
-              Manage your profile, track your activity, and customize your experience
+              Welcome back, {user?.username || "User"}! Here's your marketplace
+              overview.
             </p>
           </div>
         </motion.div>
@@ -88,112 +76,143 @@ export default function ProductsPage() {
         </motion.div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-          {/* Profile Section - Priority 2 (Main Content) */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Quick Actions */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="xl:col-span-3"
+            className="lg:col-span-2"
           >
-            <ProfileSection />
+            <Card className="border border-border/50 shadow-sm">
+              <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Package className="h-5 w-5" />
+                  Quick Actions
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Button asChild className="h-20 flex-col gap-2">
+                    <Link href="/add-product">
+                      <Plus className="h-6 w-6" />
+                      <span>Add Product</span>
+                    </Link>
+                  </Button>
+
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-20 flex-col gap-2"
+                  >
+                    <Link href="/my-listings">
+                      <Package className="h-6 w-6" />
+                      <span>My Listings</span>
+                    </Link>
+                  </Button>
+
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-20 flex-col gap-2"
+                  >
+                    <Link href="/products">
+                      <Eye className="h-6 w-6" />
+                      <span>Browse Products</span>
+                    </Link>
+                  </Button>
+
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-20 flex-col gap-2"
+                  >
+                    <Link href="/purchases">
+                      <ShoppingCart className="h-6 w-6" />
+                      <span>My Orders</span>
+                    </Link>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </motion.div>
 
-          {/* Settings Sidebar - Priority 3 */}
+          {/* Recent Activity */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.3 }}
             className="space-y-6"
           >
-            {/* Account Settings */}
             <Card className="border border-border/50 shadow-sm">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Settings className="h-5 w-5" />
-                  Account Settings
+                  <TrendingUp className="h-5 w-5" />
+                  Recent Activity
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                  <div className="space-y-1">
-                    <Label className="text-sm font-medium">Email Notifications</Label>
-                    <p className="text-xs text-muted-foreground">Receive updates about your orders</p>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <div className="p-2 rounded-full bg-primary/10">
+                    <Heart className="h-4 w-4 text-primary" />
                   </div>
-                  <Switch defaultChecked />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">Added to wishlist</p>
+                    <p className="text-xs text-muted-foreground">2 hours ago</p>
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                  <div className="space-y-1">
-                    <Label className="text-sm font-medium">Marketing Emails</Label>
-                    <p className="text-xs text-muted-foreground">Get notified about new features</p>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <div className="p-2 rounded-full bg-green-500/10">
+                    <ShoppingCart className="h-4 w-4 text-green-500" />
                   </div>
-                  <Switch />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">New order placed</p>
+                    <p className="text-xs text-muted-foreground">1 day ago</p>
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                  <div className="space-y-1">
-                    <Label className="text-sm font-medium">Profile Visibility</Label>
-                    <p className="text-xs text-muted-foreground">Show your profile to other users</p>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <div className="p-2 rounded-full bg-blue-500/10">
+                    <Package className="h-4 w-4 text-blue-500" />
                   </div>
-                  <Switch defaultChecked />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">Product listed</p>
+                    <p className="text-xs text-muted-foreground">3 days ago</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Security Settings */}
+            {/* Quick Stats */}
             <Card className="border border-border/50 shadow-sm">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <Shield className="h-5 w-5" />
-                  Security
+                  <DollarSign className="h-5 w-5" />
+                  This Month
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2"
-                >
-                  <Key className="h-4 w-4" />
-                  Change Password
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2"
-                >
-                  <Shield className="h-4 w-4" />
-                  Two-Factor Authentication
-                </Button>
-                
-                <Button
-                  variant="outline"
-                  className="w-full justify-start gap-2"
-                >
-                  <Download className="h-4 w-4" />
-                  Download My Data
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <Card className="border border-border/50 shadow-sm">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Bell className="h-5 w-5" />
-                  Quick Actions
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button className="w-full gap-2">
-                  <User className="h-4 w-4" />
-                  View Public Profile
-                </Button>
-                
-                <Button variant="outline" className="w-full gap-2">
-                  <Settings className="h-4 w-4" />
-                  Account Preferences
-                </Button>
+              <CardContent className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    Items Sold
+                  </span>
+                  <span className="font-semibold">12</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Revenue</span>
+                  <span className="font-semibold">$450</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">
+                    Items Bought
+                  </span>
+                  <span className="font-semibold">8</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-muted-foreground">Spent</span>
+                  <span className="font-semibold">$320</span>
+                </div>
               </CardContent>
             </Card>
           </motion.div>

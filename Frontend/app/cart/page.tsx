@@ -73,7 +73,7 @@ export default function CartPage() {
                   Discover amazing pre-loved items and start building your sustainable collection
                 </p>
                 <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-                  <Link href="/">
+                  <Link href="/products">
                     <ShoppingBag className="h-4 w-4 mr-2" />
                     Start Shopping
                   </Link>

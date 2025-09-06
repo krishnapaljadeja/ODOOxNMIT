@@ -93,7 +93,7 @@ export default function WishlistPage() {
                     Start adding items you love to your wishlist and they'll appear here
                   </p>
                   <Button asChild size="lg">
-                    <Link href="/">
+                    <Link href="/products">
                       Start Shopping
                     </Link>
                   </Button>
