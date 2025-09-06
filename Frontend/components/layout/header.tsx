@@ -88,6 +88,17 @@ export function Header({ onSearch }: HeaderProps) {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              className="hover:bg-primary/10 transition-colors duration-300 font-medium"
+              asChild
+            >
+              <Link href="/dashboard" className="flex items-center">
+                <Package className="h-4 w-4 mr-2 text-primary" />
+                Products
+              </Link>
+            </Button>
+            
             <ThemeToggle />
 
             <Button
@@ -177,9 +188,16 @@ export function Header({ onSearch }: HeaderProps) {
                   </div>
 
                   <DropdownMenuItem asChild className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200">
-                    <Link href="/dashboard" className="flex items-center">
+                    <Link href="/profile" className="flex items-center">
                       <User className="h-4 w-4 mr-2 text-primary" />
                       <span>Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem asChild className="hover:bg-primary/10 focus:bg-primary/10 transition-colors duration-200">
+                    <Link href="/dashboard" className="flex items-center">
+                      <Package className="h-4 w-4 mr-2 text-primary" />
+                      <span>Products</span>
                     </Link>
                   </DropdownMenuItem>
 

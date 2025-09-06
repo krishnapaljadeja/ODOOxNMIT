@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Filter, SortAsc, Grid3X3, ChevronDown } from "lucide-react";
+import { Filter, SortAsc, Grid3X3, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

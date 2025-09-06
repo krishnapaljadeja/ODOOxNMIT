@@ -171,6 +171,30 @@ export default function HomePage() {
                 <span className="absolute -inset-1 blur-3xl bg-primary/5 rounded-full"></span>
                 <span className="relative">Find unique, pre-loved items and give them a new life while reducing environmental impact</span>
               </motion.p>
+              
+              <motion.div 
+                variants={itemVariants}
+                className="mt-8"
+              >
+                <Link href="/dashboard">
+                  <Button 
+                    size="lg" 
+                    className="bg-gradient-to-r from-primary to-green-500 hover:from-green-500 hover:to-primary text-primary-foreground px-8 py-6 text-lg font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group relative overflow-hidden"
+                  >
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-primary/20 to-green-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform group-hover:scale-110 rounded-full blur-md"></span>
+                    <span className="relative flex items-center">
+                      Explore Products
+                      <motion.span 
+                        className="ml-2"
+                        animate={{ x: [0, 5, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                      >
+                        →
+                      </motion.span>
+                    </span>
+                  </Button>
+                </Link>
+              </motion.div>
 
               <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-8 mt-16">
                 {[
@@ -205,24 +229,6 @@ export default function HomePage() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="mb-12 max-w-5xl mx-auto"
-          >
-            <div className="bg-card/60 backdrop-blur-md border border-primary/10 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-              <ProductFilters
-                selectedCategory={selectedCategory}
-                sortBy={sortBy}
-                groupBy={groupBy}
-                onCategoryChange={handleCategoryChange}
-                onSortChange={handleSortChange}
-                onGroupByChange={handleGroupByChange}
-              />
-            </div>
-          </motion.div>
-
-          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.8 }}
@@ -231,25 +237,6 @@ export default function HomePage() {
             {/* Decorative elements */}
             <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-br from-green-500/5 to-transparent rounded-full blur-3xl"></div>
             <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-gradient-to-tl from-primary/5 to-transparent rounded-full blur-3xl"></div>
-            
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="mb-8 text-center"
-            >
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground inline-block relative">
-                <span className="absolute -inset-1 blur-lg bg-primary/10 rounded-full"></span>
-                <span className="relative">Explore Our Collection</span>
-              </h2>
-            </motion.div>
-            
-            <ProductGrid
-              searchQuery={searchQuery}
-              selectedCategory={selectedCategory}
-              sortBy={sortBy}
-              groupBy={groupBy}
-            />
           </motion.div>
         </main>
 
