@@ -3,8 +3,8 @@ import { ApiService, API_ENDPOINTS } from "./api";
 // Backend response types
 interface BackendCartResponse {
   statusCode: number;
-  message: string;
-  data: {
+  data: string; // "Cart retrieved successfully"
+  message: {
     cart: Cart;
   };
   success: boolean;
@@ -12,8 +12,8 @@ interface BackendCartResponse {
 
 interface BackendCartItemResponse {
   statusCode: number;
-  message: string;
-  data: {
+  data: string; // "Item added successfully"
+  message: {
     item: CartItem;
   };
   success: boolean;
@@ -59,7 +59,7 @@ export class CartService {
       const response = await ApiService.get<BackendCartResponse>(
         API_ENDPOINTS.CART.GET
       );
-      return response.data.cart;
+      return response.message.cart;
     } catch (error: any) {
       throw new Error(error.message || "Failed to fetch cart");
     }
@@ -72,7 +72,7 @@ export class CartService {
         API_ENDPOINTS.CART.ADD,
         itemData
       );
-      return response.data.item;
+      return response.message.item;
     } catch (error: any) {
       throw new Error(error.message || "Failed to add item to cart");
     }
@@ -85,7 +85,7 @@ export class CartService {
         API_ENDPOINTS.CART.UPDATE,
         itemData
       );
-      return response.data.item;
+      return response.message.item;
     } catch (error: any) {
       throw new Error(error.message || "Failed to update cart item");
     }

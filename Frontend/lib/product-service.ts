@@ -3,8 +3,8 @@ import { ApiService, API_ENDPOINTS } from "./api";
 // Backend response types
 interface BackendProductResponse {
   statusCode: number;
-  message: string;
-  data: {
+  data: string; // "Product retrieved successfully"
+  message: {
     product: Product;
   };
   success: boolean;
@@ -12,8 +12,8 @@ interface BackendProductResponse {
 
 interface BackendProductsResponse {
   statusCode: number;
-  message: string;
-  data: {
+  data: string; // "Products retrieved successfully"
+  message: {
     products: Product[];
     pagination: {
       currentPage: number;
@@ -28,8 +28,8 @@ interface BackendProductsResponse {
 
 interface BackendCategoriesResponse {
   statusCode: number;
-  message: string;
-  data: {
+  data: string; // "Categories retrieved successfully"
+  message: {
     categories: string[];
   };
   success: boolean;
@@ -108,7 +108,7 @@ export class ProductService {
         : API_ENDPOINTS.PRODUCTS.LIST;
 
       const response = await ApiService.get<BackendProductsResponse>(url);
-      return response.data;
+      return response.message;
     } catch (error: any) {
       throw new Error(error.message || "Failed to fetch products");
     }
@@ -120,7 +120,7 @@ export class ProductService {
       const response = await ApiService.get<BackendProductResponse>(
         API_ENDPOINTS.PRODUCTS.GET(id)
       );
-      return response.data.product;
+      return response.message.product;
     } catch (error: any) {
       throw new Error(error.message || "Failed to fetch product");
     }
@@ -133,7 +133,7 @@ export class ProductService {
         API_ENDPOINTS.PRODUCTS.CREATE,
         productData
       );
-      return response.data.product;
+      return response.message.product;
     } catch (error: any) {
       throw new Error(error.message || "Failed to create product");
     }
@@ -149,7 +149,7 @@ export class ProductService {
         API_ENDPOINTS.PRODUCTS.UPDATE(id),
         productData
       );
-      return response.data.product;
+      return response.message.product;
     } catch (error: any) {
       throw new Error(error.message || "Failed to update product");
     }
@@ -179,7 +179,7 @@ export class ProductService {
         : API_ENDPOINTS.PRODUCTS.MY_LISTINGS;
 
       const response = await ApiService.get<BackendProductsResponse>(url);
-      return response.data;
+      return response.message;
     } catch (error: any) {
       throw new Error(error.message || "Failed to fetch your products");
     }
@@ -191,7 +191,7 @@ export class ProductService {
       const response = await ApiService.get<BackendCategoriesResponse>(
         API_ENDPOINTS.PRODUCTS.CATEGORIES
       );
-      return response.data.categories;
+      return response.message.categories;
     } catch (error: any) {
       throw new Error(error.message || "Failed to fetch categories");
     }

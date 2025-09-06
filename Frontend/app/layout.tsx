@@ -37,7 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans ${spaceGrotesk.variable} ${dmSans.variable} ${GeistMono.variable} antialiased`}>
+      <body className={`font-sans ${spaceGrotesk.variable} ${dmSans.variable} ${GeistMono.variable} antialiased`} suppressHydrationWarning>
         <Suspense fallback={null}>
           <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
             <AuthProvider>

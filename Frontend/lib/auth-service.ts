@@ -32,8 +32,8 @@ export interface AuthResponse {
 // Backend API response types
 interface BackendAuthResponse {
   statusCode: number;
-  message: string; // "Login successful"
-  data: {
+  data: string; // "Login successful"
+  message: {
     user: User;
   };
   success: boolean;
@@ -41,8 +41,8 @@ interface BackendAuthResponse {
 
 interface BackendProfileResponse {
   statusCode: number;
-  message: string;
-  data: {
+  data: string;
+  message: {
     user: User;
   };
   success: boolean;
@@ -59,10 +59,10 @@ export class AuthService {
       );
 
       // Store user data (token is handled by HTTP-only cookie)
-      if (response.data?.user) {
+      if (response.message?.user) {
         localStorage.setItem(
           "ecofinds-user",
-          JSON.stringify(response.data.user)
+          JSON.stringify(response.message.user)
         );
         // Set a flag to indicate user is authenticated
         localStorage.setItem("ecofinds-authenticated", "true");
@@ -72,7 +72,7 @@ export class AuthService {
         success: true,
         message: "Login successful",
         data: {
-          user: response.data.user,
+          user: response.message.user,
           token: "cookie-based", // Token is in HTTP-only cookie
         },
       };
@@ -94,10 +94,10 @@ export class AuthService {
       );
 
       // Store user data (token is handled by HTTP-only cookie)
-      if (response.data?.user) {
+      if (response.message?.user) {
         localStorage.setItem(
           "ecofinds-user",
-          JSON.stringify(response.data.user)
+          JSON.stringify(response.message.user)
         );
         // Set a flag to indicate user is authenticated
         localStorage.setItem("ecofinds-authenticated", "true");
@@ -107,7 +107,7 @@ export class AuthService {
         success: true,
         message: "Signup successful",
         data: {
-          user: response.data.user,
+          user: response.message.user,
           token: "cookie-based", // Token is in HTTP-only cookie
         },
       };
@@ -155,10 +155,10 @@ export class AuthService {
       );
 
       // Update stored user data
-      if (response.data?.user) {
+      if (response.message?.user) {
         localStorage.setItem(
           "ecofinds-user",
-          JSON.stringify(response.data.user)
+          JSON.stringify(response.message.user)
         );
       }
 
@@ -166,7 +166,7 @@ export class AuthService {
         success: true,
         message: "Profile retrieved successfully",
         data: {
-          user: response.data.user,
+          user: response.message.user,
           token: AuthService.getToken() || "",
         },
       };
@@ -190,10 +190,10 @@ export class AuthService {
       );
 
       // Update stored user data
-      if (response.data?.user) {
+      if (response.message?.user) {
         localStorage.setItem(
           "ecofinds-user",
-          JSON.stringify(response.data.user)
+          JSON.stringify(response.message.user)
         );
       }
 
@@ -201,7 +201,7 @@ export class AuthService {
         success: true,
         message: "Profile updated successfully",
         data: {
-          user: response.data.user,
+          user: response.message.user,
           token: AuthService.getToken() || "",
         },
       };
