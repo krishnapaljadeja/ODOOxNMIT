@@ -23,7 +23,9 @@
   --destructive-foreground: oklch(1 0 0); /* White text on destructive */
   --border: oklch(0.922 0.004 106.42); /* #e5e7eb - light gray borders */
   --input: oklch(0.98 0.01 142); /* #f0fdf4 - light green input background */
-  --ring: oklch(0.647 0.179 142.5 / 0.5); /* Semi-transparent green focus ring */
+  --ring: oklch(
+    0.647 0.179 142.5 / 0.5
+  ); /* Semi-transparent green focus ring */
   --chart-1: oklch(0.647 0.179 142.5); /* #16a34a - green */
   --chart-2: oklch(0.6 0.2 155); /* #059669 - emerald */
   --chart-3: oklch(0.55 0.22 165); /* #0d9488 - teal */
@@ -32,12 +34,20 @@
   --radius: 0.5rem; /* 8px rounded corners */
   --sidebar: oklch(0.98 0.01 142); /* #f0fdf4 - light green sidebar */
   --sidebar-foreground: oklch(0.278 0 0); /* #374151 - dark gray sidebar text */
-  --sidebar-primary: oklch(0.647 0.179 142.5); /* #16a34a - green sidebar primary */
+  --sidebar-primary: oklch(
+    0.647 0.179 142.5
+  ); /* #16a34a - green sidebar primary */
   --sidebar-primary-foreground: oklch(1 0 0); /* White sidebar primary text */
-  --sidebar-accent: oklch(0.394 0.006 256.85); /* #4b5563 - slate sidebar accent */
+  --sidebar-accent: oklch(
+    0.394 0.006 256.85
+  ); /* #4b5563 - slate sidebar accent */
   --sidebar-accent-foreground: oklch(1 0 0); /* White sidebar accent text */
-  --sidebar-border: oklch(0.922 0.004 106.42); /* #e5e7eb - light gray sidebar border */
-  --sidebar-ring: oklch(0.647 0.179 142.5 / 0.5); /* Semi-transparent green sidebar ring */
+  --sidebar-border: oklch(
+    0.922 0.004 106.42
+  ); /* #e5e7eb - light gray sidebar border */
+  --sidebar-ring: oklch(
+    0.647 0.179 142.5 / 0.5
+  ); /* Semi-transparent green sidebar ring */
 }
 
 .dark {
@@ -48,7 +58,9 @@
   --card-foreground: oklch(0.985 0 0); /* Light card text */
   --popover: oklch(0.145 0 0); /* Dark popover */
   --popover-foreground: oklch(0.985 0 0); /* Light popover text */
-  --primary: oklch(0.7 0.2 142.5); /* #22c55e - bright green primary in dark mode */
+  --primary: oklch(
+    0.7 0.2 142.5
+  ); /* #22c55e - bright green primary in dark mode */
   --primary-foreground: oklch(0.145 0 0); /* Dark text on bright green */
   --secondary: oklch(0.269 0 0); /* Lighter gray secondary in dark */
   --secondary-foreground: oklch(0.985 0 0); /* Light text on secondary */
@@ -69,7 +81,9 @@
   --sidebar: oklch(0.205 0 0); /* Dark sidebar */
   --sidebar-foreground: oklch(0.985 0 0); /* Light sidebar text */
   --sidebar-primary: oklch(0.7 0.2 142.5); /* Bright green sidebar primary */
-  --sidebar-primary-foreground: oklch(0.145 0 0); /* Dark sidebar primary text */
+  --sidebar-primary-foreground: oklch(
+    0.145 0 0
+  ); /* Dark sidebar primary text */
   --sidebar-accent: oklch(0.269 0 0); /* Dark sidebar accent */
   --sidebar-accent-foreground: oklch(0.985 0 0); /* Light sidebar accent text */
   --sidebar-border: oklch(0.269 0 0); /* Dark sidebar border */
@@ -125,6 +139,8 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Add top padding to account for fixed header */
+    padding-top: 4rem; /* 64px - height of header */
   }
   /* Added heading font class for typography hierarchy */
   .font-heading {

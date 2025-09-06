@@ -52,7 +52,7 @@ export function Header({ onSearch }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border shadow-sm">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -121,7 +121,7 @@ export function Header({ onSearch }: HeaderProps) {
                     <Avatar className="h-8 w-8">
                       <AvatarImage
                         src={user?.avatar || "/placeholder-user.jpg"}
-                        alt={user?.name || "User"}
+                        alt={user?.username || "User"}
                       />
                       <AvatarFallback>
                         <User className="h-4 w-4" />
@@ -129,9 +129,17 @@ export function Header({ onSearch }: HeaderProps) {
                     </Avatar>
                   </span>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuContent
+                  className="w-56"
+                  align="end"
+                  forceMount
+                  sideOffset={5}
+                >
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard">Profile</Link>
+                    <Link href="/dashboard" className="flex items-center">
+                      <User className="h-4 w-4 mr-2" />
+                      Profile
+                    </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/my-listings">
@@ -188,62 +196,114 @@ export function Header({ onSearch }: HeaderProps) {
             </form>
 
             {/* Mobile Navigation Links */}
-            <div className="flex items-center justify-between pt-2">
-              <div className="flex items-center space-x-4">
-                <ThemeToggle />
+            <div className="space-y-4">
+              {/* Mobile Action Buttons */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <ThemeToggle />
 
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="relative"
-                  asChild
-                >
-                  <Link href="/wishlist">
-                    <Heart className="h-5 w-5" />
-                    {wishlistItems.length > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {wishlistItems.length}
-                      </span>
-                    )}
-                  </Link>
-                </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative"
+                    asChild
+                  >
+                    <Link href="/wishlist">
+                      <Heart className="h-5 w-5" />
+                      {wishlistItems.length > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                          {wishlistItems.length}
+                        </span>
+                      )}
+                    </Link>
+                  </Button>
 
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="relative"
-                  asChild
-                >
-                  <Link href="/cart">
-                    <ShoppingCart className="h-5 w-5" />
-                    {cartState.items.length > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                        {cartState.items.length}
-                      </span>
-                    )}
-                  </Link>
-                </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="relative"
+                    asChild
+                  >
+                    <Link href="/cart">
+                      <ShoppingCart className="h-5 w-5" />
+                      {cartState.items.length > 0 && (
+                        <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                          {cartState.items.length}
+                        </span>
+                      )}
+                    </Link>
+                  </Button>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/my-listings">
-                    <List className="h-4 w-4 mr-2" />
-                    My Listings
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/purchases">
-                    <Package className="h-4 w-4 mr-2" />
-                    Orders
-                  </Link>
-                </Button>
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/dashboard">
-                    <User className="h-4 w-4 mr-2" />
-                    Profile
-                  </Link>
-                </Button>
-              </div>
+
+              {/* Mobile User Menu */}
+              {user && (
+                <div className="space-y-2">
+                  <div className="flex items-center space-x-3 p-2 rounded-lg bg-muted/50">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage
+                        src={user?.avatar || "/placeholder-user.jpg"}
+                        alt={user?.username || "User"}
+                      />
+                      <AvatarFallback>
+                        <User className="h-4 w-4" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium truncate">
+                        {user.username}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {user.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-1">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="justify-start"
+                      asChild
+                    >
+                      <Link href="/dashboard">
+                        <User className="h-4 w-4 mr-2" />
+                        Profile
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="justify-start"
+                      asChild
+                    >
+                      <Link href="/my-listings">
+                        <List className="h-4 w-4 mr-2" />
+                        My Listings
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="justify-start"
+                      asChild
+                    >
+                      <Link href="/purchases">
+                        <Package className="h-4 w-4 mr-2" />
+                        Orders
+                      </Link>
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="justify-start text-destructive"
+                      onClick={logout}
+                    >
+                      Logout
+                    </Button>
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
