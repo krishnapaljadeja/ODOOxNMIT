@@ -10,7 +10,7 @@ const stats = [
     change: "+3 this month",
     icon: ShoppingBag,
     color: "text-blue-600",
-    bgColor: "bg-blue-100 dark:bg-blue-900",
+    bgColor: "bg-blue-50 dark:bg-blue-950",
   },
   {
     title: "Items Sold",
@@ -18,7 +18,7 @@ const stats = [
     change: "+2 this month",
     icon: DollarSign,
     color: "text-green-600",
-    bgColor: "bg-green-100 dark:bg-green-900",
+    bgColor: "bg-green-50 dark:bg-green-950",
   },
   {
     title: "Saved Items",
@@ -26,7 +26,7 @@ const stats = [
     change: "+1 this week",
     icon: Heart,
     color: "text-red-600",
-    bgColor: "bg-red-100 dark:bg-red-900",
+    bgColor: "bg-red-50 dark:bg-red-950",
   },
   {
     title: "Profile Views",
@@ -34,53 +34,36 @@ const stats = [
     change: "+12 this week",
     icon: TrendingUp,
     color: "text-purple-600",
-    bgColor: "bg-purple-100 dark:bg-purple-900",
+    bgColor: "bg-purple-50 dark:bg-purple-950",
   },
 ]
 
 export function StatsOverview() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat, index) => (
         <motion.div
           key={stat.title}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          whileHover={{ y: -5, scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+          transition={{ duration: 0.3, delay: index * 0.1 }}
         >
-          <Card className="border-primary/10 shadow-md hover:shadow-xl transition-all duration-300 bg-card/60 backdrop-blur-sm overflow-hidden relative">
-            {/* Decorative gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent -z-10"></div>
-            
+          <Card className="border border-border/50 shadow-sm hover:shadow-md transition-shadow duration-200">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground mb-1">{stat.title}</p>
-                  <p className="text-3xl font-bold text-foreground">{stat.value}</p>
-                  <motion.p 
-                    initial={{ opacity: 0.8 }}
-                    whileHover={{ opacity: 1 }}
-                    className="text-xs font-medium text-muted-foreground mt-2 flex items-center"
-                  >
-                    <motion.span 
-                      initial={{ x: 0 }}
-                      whileHover={{ x: 2 }}
-                      className="text-primary mr-1"
-                    >
-                      <TrendingUp className="h-3 w-3 inline mr-1" />
-                    </motion.span>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {stat.title}
+                  </p>
+                  <p className="text-2xl font-bold">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <TrendingUp className="h-3 w-3" />
                     {stat.change}
-                  </motion.p>
+                  </p>
                 </div>
-                <motion.div 
-                  className={`p-3 rounded-full bg-gradient-to-br ${stat.bgColor.replace('bg-', 'from-').replace(' dark:bg-', ' to-')} to-transparent`}
-                  whileHover={{ rotate: 15, scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <stat.icon className={`h-6 w-6 ${stat.color}`} />
-                </motion.div>
+                <div className={`p-3 rounded-lg ${stat.bgColor}`}>
+                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                </div>
               </div>
             </CardContent>
           </Card>
