@@ -91,7 +91,7 @@ export default function ProductDetailPage() {
             </Alert>
             <div className="mt-4">
               <Button asChild>
-                <Link href="/">
+                <Link href="/products">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Back to Products
                 </Link>
@@ -247,7 +247,7 @@ export default function ProductDetailPage() {
 
                   <div className="flex items-center space-x-3 mb-4">
                     <span className="font-bold text-3xl text-foreground">
-                      ${product.price}
+                      ₹{product.price}
                     </span>
                   </div>
 
@@ -264,26 +264,23 @@ export default function ProductDetailPage() {
                   <Badge variant="secondary">{product.category}</Badge>
                 </div>
 
-                {/* Add to Cart */}
+                {/* Product Description */}
                 <Card>
                   <CardContent className="p-4">
-                    <div className="space-y-4">
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <Button
-                          onClick={handleAddToCart}
-                          size="lg"
-                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
-                        >
-                          <ShoppingCart className="h-5 w-5 mr-2" />
-                          Add to Cart
-                        </Button>
-                      </motion.div>
-                      <p className="text-xs text-muted-foreground text-center">
-                        Free shipping on orders over $50 • 30-day return policy
-                      </p>
+                    <h2 className="font-heading text-lg font-semibold text-foreground mb-3">
+                      Description
+                    </h2>
+                    <div className="prose prose-sm max-w-none text-foreground">
+                      {product.description
+                        .split("\n")
+                        .map((paragraph, index) => (
+                          <p
+                            key={index}
+                            className="mb-3 last:mb-0 whitespace-pre-line text-sm leading-relaxed"
+                          >
+                            {paragraph}
+                          </p>
+                        ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -317,35 +314,33 @@ export default function ProductDetailPage() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Add to Cart */}
+                <Card>
+                  <CardContent className="p-4">
+                    <div className="space-y-4">
+                      <motion.div
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Button
+                          onClick={handleAddToCart}
+                          size="lg"
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium"
+                        >
+                          <ShoppingCart className="h-5 w-5 mr-2" />
+                          Add to Cart
+                        </Button>
+                      </motion.div>
+                      <p className="text-xs text-muted-foreground text-center">
+                        Free shipping on orders over ₹50 • 30-day return policy
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </motion.div>
           </div>
-
-          {/* Product Description */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-12"
-          >
-            <Card>
-              <CardContent className="p-6">
-                <h2 className="font-heading text-xl font-semibold text-foreground mb-4">
-                  Description
-                </h2>
-                <div className="prose prose-sm max-w-none text-foreground">
-                  {product.description.split("\n").map((paragraph, index) => (
-                    <p
-                      key={index}
-                      className="mb-3 last:mb-0 whitespace-pre-line"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
         </div>
       </main>
     </div>

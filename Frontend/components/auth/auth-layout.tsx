@@ -1,13 +1,13 @@
-"use client"
-import type React from "react"
-import { motion } from "framer-motion"
-import { Leaf } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
+"use client";
+import type React from "react";
+import { motion } from "framer-motion";
+import { Leaf } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface AuthLayoutProps {
-  children: React.ReactNode
-  title: string
-  subtitle: string
+  children: React.ReactNode;
+  title: string;
+  subtitle: string;
 }
 
 export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
@@ -31,21 +31,33 @@ export function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="text-center mb-8"
           >
-            <div className="flex items-center justify-center mb-4">
-              <div className="bg-primary rounded-full p-3">
-                <Leaf className="h-8 w-8 text-primary-foreground" />
+            <div className="flex items-center justify-center mb-6">
+              <div className="bg-white rounded-full shadow-lg w-20 h-20 flex items-center justify-center p-0">
+                <img
+                  src="/logo.png"
+                  alt="EcoFinds Logo"
+                  className="w-26 h-26 object-contain rounded-full"
+                />
               </div>
             </div>
-            <h1 className="font-heading text-2xl font-bold text-foreground">EcoFinds</h1>
-            <p className="text-muted-foreground text-sm mt-1">Sustainable Second-Hand Marketplace</p>
+            <h1 className="font-heading text-2xl font-bold text-foreground">
+              EcoFinds
+            </h1>
+            <p className="text-muted-foreground text-sm mt-1">
+              Sustainable Second-Hand Marketplace
+            </p>
           </motion.div>
 
           {/* Form Content */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+          >
             {children}
           </motion.div>
         </div>
       </motion.div>
     </div>
-  )
+  );
 }

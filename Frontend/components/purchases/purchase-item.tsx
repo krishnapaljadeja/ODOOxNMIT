@@ -86,7 +86,7 @@ export function PurchaseItem({ purchase }: PurchaseItemProps) {
                 {statusInfo.label}
               </Badge>
               <p className="text-sm font-medium text-foreground mt-1">
-                ${purchase.totalAmount.toFixed(2)}
+                ₹{purchase.totalAmount.toFixed(2)}
               </p>
             </div>
           </div>
@@ -116,7 +116,7 @@ export function PurchaseItem({ purchase }: PurchaseItemProps) {
                   </p>
                   <div className="flex items-center justify-between mt-1">
                     <span className="text-sm font-medium text-foreground">
-                      ${item.price}
+                      ₹{item.price}
                     </span>
                     <span className="text-sm text-muted-foreground">
                       Qty: {item.quantity}

@@ -1,36 +1,36 @@
-"use client"
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Heart, ShoppingCart, Trash2, ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { Header } from "@/components/layout/header"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { useWishlist } from "@/components/wishlist/wishlist-context"
-import { ProtectedRoute } from "@/components/auth/protected-route"
+"use client";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Heart, ShoppingCart, Trash2, ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { Header } from "@/components/layout/header";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useWishlist } from "@/components/wishlist/wishlist-context";
+import { ProtectedRoute } from "@/components/auth/protected-route";
 
 export default function WishlistPage() {
-  const { wishlistItems, removeFromWishlist, clearWishlist } = useWishlist()
-  const [isClearing, setIsClearing] = useState(false)
+  const { wishlistItems, removeFromWishlist, clearWishlist } = useWishlist();
+  const [isClearing, setIsClearing] = useState(false);
 
   const handleRemoveItem = (id: string) => {
-    removeFromWishlist(id)
-  }
+    removeFromWishlist(id);
+  };
 
   const handleClearWishlist = async () => {
-    setIsClearing(true)
+    setIsClearing(true);
     // Simulate API call
     setTimeout(() => {
-      clearWishlist()
-      setIsClearing(false)
-    }, 1000)
-  }
+      clearWishlist();
+      setIsClearing(false);
+    }, 1000);
+  };
 
   const handleAddToCart = (productId: string) => {
-    console.log("Added to cart:", productId)
+    console.log("Added to cart:", productId);
     // Add toast notification here
-  }
+  };
 
   return (
     <ProtectedRoute>
@@ -40,9 +40,13 @@ export default function WishlistPage() {
         <main className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8"
+            >
               <Link
-                href="/"
+                href="/products"
                 className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6 transition-colors group"
               >
                 <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
@@ -50,9 +54,13 @@ export default function WishlistPage() {
               </Link>
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="font-heading text-3xl font-bold text-foreground mb-2">My Wishlist</h1>
+                  <h1 className="font-heading text-3xl font-bold text-foreground mb-2">
+                    My Wishlist
+                  </h1>
                   <p className="text-muted-foreground">
-                    {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"} saved for later
+                    {wishlistItems.length}{" "}
+                    {wishlistItems.length === 1 ? "item" : "items"} saved for
+                    later
                   </p>
                 </div>
                 {wishlistItems.length > 0 && (
@@ -65,7 +73,11 @@ export default function WishlistPage() {
                     {isClearing ? (
                       <motion.div
                         animate={{ rotate: 360 }}
-                        transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+                        transition={{
+                          duration: 1,
+                          repeat: Number.POSITIVE_INFINITY,
+                          ease: "linear",
+                        }}
                         className="w-4 h-4 border-2 border-destructive border-t-transparent rounded-full mr-2"
                       />
                     ) : (
@@ -88,14 +100,15 @@ export default function WishlistPage() {
                   <div className="bg-muted rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
                     <Heart className="h-10 w-10 text-muted-foreground" />
                   </div>
-                  <h3 className="font-heading text-xl font-semibold text-foreground mb-3">Your wishlist is empty</h3>
+                  <h3 className="font-heading text-xl font-semibold text-foreground mb-3">
+                    Your wishlist is empty
+                  </h3>
                   <p className="text-muted-foreground mb-6">
-                    Start adding items you love to your wishlist and they'll appear here
+                    Start adding items you love to your wishlist and they'll
+                    appear here
                   </p>
                   <Button asChild size="lg">
-                    <Link href="/products">
-                      Start Shopping
-                    </Link>
+                    <Link href="/products">Start Shopping</Link>
                   </Button>
                 </div>
               </motion.div>
@@ -124,12 +137,20 @@ export default function WishlistPage() {
                         {/* Discount Badge */}
                         {item.originalPrice && (
                           <Badge className="absolute top-2 left-2 bg-destructive text-destructive-foreground">
-                            -{Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)}%
+                            -
+                            {Math.round(
+                              ((item.originalPrice - item.price) /
+                                item.originalPrice) *
+                                100
+                            )}
+                            %
                           </Badge>
                         )}
 
                         {/* Condition Badge */}
-                        <Badge className="absolute top-2 right-2">{item.condition}</Badge>
+                        <Badge className="absolute top-2 right-2">
+                          {item.condition}
+                        </Badge>
 
                         {/* Remove from Wishlist Button */}
                         <Button
@@ -145,13 +166,19 @@ export default function WishlistPage() {
                       <CardContent className="p-4">
                         <div className="space-y-2">
                           <div className="flex items-start justify-between">
-                            <h3 className="font-medium text-foreground line-clamp-2 text-sm">{item.title}</h3>
+                            <h3 className="font-medium text-foreground line-clamp-2 text-sm">
+                              {item.title}
+                            </h3>
                           </div>
 
                           <div className="flex items-center space-x-2">
-                            <span className="font-bold text-lg text-foreground">${item.price}</span>
+                            <span className="font-bold text-lg text-foreground">
+                              ₹{item.price}
+                            </span>
                             {item.originalPrice && (
-                              <span className="text-sm text-muted-foreground line-through">${item.originalPrice}</span>
+                              <span className="text-sm text-muted-foreground line-through">
+                                ₹{item.originalPrice}
+                              </span>
                             )}
                           </div>
 
@@ -189,5 +216,5 @@ export default function WishlistPage() {
         </main>
       </div>
     </ProtectedRoute>
-  )
+  );
 }

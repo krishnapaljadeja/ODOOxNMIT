@@ -201,7 +201,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Revenue</span>
-                  <span className="font-semibold">$450</span>
+                  <span className="font-semibold">₹450</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">
@@ -211,7 +211,7 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Spent</span>
-                  <span className="font-semibold">$320</span>
+                  <span className="font-semibold">₹320</span>
                 </div>
               </CardContent>
             </Card>

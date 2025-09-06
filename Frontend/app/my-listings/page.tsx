@@ -160,7 +160,7 @@ export default function MyListingsPage() {
             <Card>
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-foreground">
-                  $
+                  ₹
                   {listings
                     .reduce((sum, l) => sum + l.price, 0)
                     .toLocaleString()}
@@ -217,7 +217,7 @@ export default function MyListingsPage() {
                           </h3>
                           <div className="flex items-center space-x-2 mt-1">
                             <span className="font-bold text-lg text-foreground">
-                              ${listing.price}
+                              ₹{listing.price}
                             </span>
                           </div>
                         </div>

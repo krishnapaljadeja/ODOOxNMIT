@@ -1,62 +1,66 @@
-"use client"
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { ShoppingCart, Truck, Shield, CheckCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { useCart } from "./cart-context"
-import { useRouter } from "next/navigation"
-import { toast } from "@/hooks/use-toast"
+"use client";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { ShoppingCart, Truck, Shield, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { useCart } from "./cart-context";
+import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 interface CartSummaryProps {
   // No props needed - direct order placement
 }
 
 export function CartSummary({}: CartSummaryProps) {
-  const { state, processPurchase } = useCart()
-  const router = useRouter()
-  const [isProcessing, setIsProcessing] = useState(false)
+  const { state, processPurchase } = useCart();
+  const router = useRouter();
+  const [isProcessing, setIsProcessing] = useState(false);
 
-  const shipping = state.total >= 50 ? 0 : 9.99
-  const tax = state.total * 0.08 // 8% tax
-  const finalTotal = state.total + shipping + tax
+  const shipping = state.total >= 50 ? 0 : 9.99;
+  const tax = state.total * 0.08; // 8% tax
+  const finalTotal = state.total + shipping + tax;
 
   const handlePlaceOrder = async () => {
-    setIsProcessing(true)
-    
+    setIsProcessing(true);
+
     try {
-      const result = await processPurchase()
-      
+      const result = await processPurchase();
+
       if (result.success) {
         toast({
           title: "Order Placed Successfully!",
           description: `Your order has been placed. Order ID: ${result.purchaseId}`,
-        })
-        
+        });
+
         // Redirect to order confirmation or purchases page
-        router.push(`/purchases/${result.purchaseId}`)
+        router.push(`/purchases/${result.purchaseId}`);
       } else {
         toast({
           title: "Order Failed",
           description: result.error || "Failed to place order",
           variant: "destructive",
-        })
+        });
       }
     } catch (error) {
-      console.error("Error placing order:", error)
+      console.error("Error placing order:", error);
       toast({
         title: "Order Failed",
         description: "An unexpected error occurred",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
-  }
+  };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+    >
       <Card className="sticky top-24">
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -69,19 +73,21 @@ export function CartSummary({}: CartSummaryProps) {
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span>Subtotal ({state.itemCount} items)</span>
-              <span>${state.total.toFixed(2)}</span>
+              <span>₹{state.total.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="flex items-center">
                 <Truck className="h-3 w-3 mr-1" />
                 Shipping
-                {state.total >= 50 && <span className="ml-1 text-green-600">(Free!)</span>}
+                {state.total >= 50 && (
+                  <span className="ml-1 text-green-600">(Free!)</span>
+                )}
               </span>
-              <span>${shipping.toFixed(2)}</span>
+              <span>₹{shipping.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span>Tax</span>
-              <span>${tax.toFixed(2)}</span>
+              <span>₹{tax.toFixed(2)}</span>
             </div>
           </div>
 
@@ -90,13 +96,13 @@ export function CartSummary({}: CartSummaryProps) {
           {/* Total */}
           <div className="flex justify-between font-bold text-lg">
             <span>Total</span>
-            <span>${finalTotal.toFixed(2)}</span>
+            <span>₹{finalTotal.toFixed(2)}</span>
           </div>
 
           {/* Free Shipping Notice */}
           {state.total < 50 && state.total > 0 && (
             <div className="bg-muted p-3 rounded-lg text-sm text-center">
-              Add ${(50 - state.total).toFixed(2)} more for free shipping!
+              Add ₹{(50 - state.total).toFixed(2)} more for free shipping!
             </div>
           )}
 
@@ -146,5 +152,5 @@ export function CartSummary({}: CartSummaryProps) {
         </CardContent>
       </Card>
     </motion.div>
-  )
+  );
 }

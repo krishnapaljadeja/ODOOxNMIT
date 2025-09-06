@@ -57,9 +57,11 @@ export function Header({ onSearch }: HeaderProps) {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className="bg-gradient-to-r from-primary to-green-500 rounded-full p-2 shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105">
-              <Leaf className="h-5 w-5 text-primary-foreground animate-pulse" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="EcoFinds Logo"
+              className="h-16 w-16 rounded-full  "
+            />
             <motion.span
               className="font-heading text-xl font-bold bg-gradient-to-r from-primary to-green-500 bg-clip-text text-transparent"
               animate={{
@@ -71,6 +73,7 @@ export function Header({ onSearch }: HeaderProps) {
               EcoFinds
             </motion.span>
           </Link>
+        
 
           {/* Desktop Search Bar */}
           <div className="hidden md:flex flex-1 max-w-md mx-8">

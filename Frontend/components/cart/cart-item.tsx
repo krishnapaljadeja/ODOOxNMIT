@@ -1,44 +1,44 @@
-"use client"
-import { motion } from "framer-motion"
-import { Minus, Plus, Trash2 } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { useCart } from "./cart-context"
+"use client";
+import { motion } from "framer-motion";
+import { Minus, Plus, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useCart } from "./cart-context";
 
 interface CartItem {
-  id: string
-  title: string
-  price: number
-  image: string
-  seller: string
-  condition: string
-  quantity: number
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+  seller: string;
+  condition: string;
+  quantity: number;
 }
 
 interface CartItemProps {
-  item: CartItem
+  item: CartItem;
 }
 
 export function CartItemComponent({ item }: CartItemProps) {
-  const { updateCartItemQuantity, removeFromCart } = useCart()
+  const { updateCartItemQuantity, removeFromCart } = useCart();
 
   const updateQuantity = async (newQuantity: number) => {
     try {
-      await updateCartItemQuantity(item.id, newQuantity)
+      await updateCartItemQuantity(item.id, newQuantity);
     } catch (error) {
-      console.error("Failed to update quantity:", error)
+      console.error("Failed to update quantity:", error);
     }
-  }
+  };
 
   const removeItem = async () => {
     try {
-      await removeFromCart(item.id)
+      await removeFromCart(item.id);
     } catch (error) {
-      console.error("Failed to remove item:", error)
+      console.error("Failed to remove item:", error);
     }
-  }
+  };
 
   return (
     <motion.div
@@ -70,13 +70,17 @@ export function CartItemComponent({ item }: CartItemProps) {
                 </h3>
               </Link>
               <div className="flex items-center space-x-2 mt-1">
-                <span className="text-sm text-muted-foreground">by {item.seller}</span>
+                <span className="text-sm text-muted-foreground">
+                  by {item.seller}
+                </span>
                 <Badge className="text-xs">{item.condition}</Badge>
               </div>
               <div className="flex items-center justify-between mt-2">
-                <span className="font-bold text-lg text-foreground">${item.price}</span>
+                <span className="font-bold text-lg text-foreground">
+                  ₹{item.price}
+                </span>
                 <span className="text-sm text-muted-foreground">
-                  Subtotal: ${(item.price * item.quantity).toFixed(2)}
+                  Subtotal: ₹{(item.price * item.quantity).toFixed(2)}
                 </span>
               </div>
             </div>
@@ -93,7 +97,9 @@ export function CartItemComponent({ item }: CartItemProps) {
                 >
                   <Minus className="h-3 w-3" />
                 </Button>
-                <div className="px-3 py-1 text-sm font-medium min-w-[2rem] text-center">{item.quantity}</div>
+                <div className="px-3 py-1 text-sm font-medium min-w-[2rem] text-center">
+                  {item.quantity}
+                </div>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -117,5 +123,5 @@ export function CartItemComponent({ item }: CartItemProps) {
         </CardContent>
       </Card>
     </motion.div>
-  )
+  );
 }

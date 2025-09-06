@@ -206,10 +206,10 @@ export default function PurchaseDetailPage() {
                         </p>
                         <div className="flex items-center justify-between mt-2">
                           <span className="text-sm font-medium text-foreground">
-                            ${item.price} × {item.quantity}
+                            ₹{item.price} × {item.quantity}
                           </span>
                           <span className="font-medium text-foreground">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            ₹{(item.price * item.quantity).toFixed(2)}
                           </span>
                         </div>
                       </div>
@@ -219,84 +219,67 @@ export default function PurchaseDetailPage() {
               </Card>
             </motion.div>
 
-            {/* Order Summary */}
+            {/* Order Summary & Information */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="space-y-6"
             >
-              {/* Order Summary */}
               <Card>
                 <CardHeader>
                   <CardTitle>Order Summary</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Subtotal</span>
-                    <span className="font-medium">
-                      ${purchase.totalAmount.toFixed(2)}
-                    </span>
+                <CardContent className="space-y-6">
+                  {/* Order Information */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-muted/30 rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm font-medium">Order Date</p>
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(purchase.purchaseDate).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <StatusIcon className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm font-medium">Status</p>
+                        <p className="text-sm text-muted-foreground">
+                          {statusInfo.label}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Shipping</span>
-                    <span className="font-medium">Free</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Tax</span>
-                    <span className="font-medium">$0.00</span>
-                  </div>
-                  <div className="border-t border-border pt-4">
+
+                  {/* Financial Summary */}
+                  <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="font-medium text-lg">Total</span>
-                      <span className="font-bold text-lg">
-                        ${purchase.totalAmount.toFixed(2)}
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="font-medium">
+                        ₹{purchase.totalAmount.toFixed(2)}
                       </span>
                     </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Shipping</span>
+                      <span className="font-medium">Free</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Tax</span>
+                      <span className="font-medium">₹0.00</span>
+                    </div>
+                    <div className="border-t border-border pt-3">
+                      <div className="flex justify-between">
+                        <span className="font-medium text-lg">Total</span>
+                        <span className="font-bold text-lg">
+                          ₹{purchase.totalAmount.toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                </CardContent>
-              </Card>
 
-              {/* Order Information */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Order Information</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">Order Date</p>
-                      <p className="text-sm text-muted-foreground">
-                        {new Date(purchase.purchaseDate).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <CreditCard className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">Payment Method</p>
-                      <p className="text-sm text-muted-foreground">
-                        Credit Card
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <StatusIcon className="h-4 w-4 text-muted-foreground" />
-                    <div>
-                      <p className="text-sm font-medium">Status</p>
-                      <p className="text-sm text-muted-foreground">
-                        {statusInfo.label}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Actions */}
-              <Card>
-                <CardContent className="pt-6">
-                  <div className="space-y-3">
+                  {/* Action Buttons */}
+                  <div className="space-y-3 pt-4 border-t border-border">
                     {purchase.status === "completed" && (
                       <Button className="w-full" variant="outline">
                         <Star className="h-4 w-4 mr-2" />

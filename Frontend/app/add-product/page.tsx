@@ -211,7 +211,7 @@ export default function AddProductPage() {
             className="mb-8"
           >
             <Link
-              href="/"
+              href="/products"
               className="inline-flex items-center text-muted-foreground hover:text-foreground mb-6 transition-colors group"
             >
               <ArrowLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
@@ -235,253 +235,255 @@ export default function AddProductPage() {
             transition={{ delay: 0.1 }}
           >
             <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Basic Information Card */}
+              {/* Unified Product Form Card */}
               <Card className="border-0 shadow-lg bg-card/50 backdrop-blur-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <FileText className="h-5 w-5 text-primary" />
-                    Basic Information
+                <CardHeader className="pb-6">
+                  <CardTitle className="flex items-center gap-2 text-2xl">
+                    <Package className="h-6 w-6 text-primary" />
+                    Product Information
                   </CardTitle>
+                  <p className="text-muted-foreground">
+                    Fill in all the details about your item to create an
+                    attractive listing
+                  </p>
                 </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Title */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="title"
-                      className="text-sm font-semibold flex items-center gap-2"
-                    >
-                      <Tag className="h-4 w-4" />
-                      Product Title *
-                    </Label>
-                    <Input
-                      id="title"
-                      placeholder="e.g., Vintage Leather Jacket - Brown"
-                      value={formData.title}
-                      onChange={(e) =>
-                        handleInputChange("title", e.target.value)
-                      }
-                      className={`h-12 text-base ${
-                        errors.title ? "border-destructive" : ""
-                      }`}
-                    />
-                    {errors.title && (
-                      <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-sm text-destructive flex items-center gap-1"
-                      >
-                        {errors.title}
-                      </motion.p>
-                    )}
-                  </div>
+                <CardContent className="space-y-8">
+                  {/* Basic Information Section */}
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-2 pb-2 border-b border-border/50">
+                      <FileText className="h-5 w-5 text-primary" />
+                      <h3 className="text-lg font-semibold">
+                        Basic Information
+                      </h3>
+                    </div>
 
-                  {/* Description */}
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="description"
-                      className="text-sm font-semibold flex items-center gap-2"
-                    >
-                      <FileText className="h-4 w-4" />
-                      Description *
-                    </Label>
-                    <Textarea
-                      id="description"
-                      placeholder="Describe your item's condition, features, and any relevant details..."
-                      rows={5}
-                      value={formData.description}
-                      onChange={(e) =>
-                        handleInputChange("description", e.target.value)
-                      }
-                      className={`text-base resize-none ${
-                        errors.description ? "border-destructive" : ""
-                      }`}
-                    />
-                    {errors.description && (
-                      <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-sm text-destructive"
-                      >
-                        {errors.description}
-                      </motion.p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      {/* Title */}
+                      <div className="space-y-2 lg:col-span-2">
+                        <Label
+                          htmlFor="title"
+                          className="text-sm font-semibold flex items-center gap-2"
+                        >
+                          <Tag className="h-4 w-4" />
+                          Product Title *
+                        </Label>
+                        <Input
+                          id="title"
+                          placeholder="e.g., Vintage Leather Jacket - Brown"
+                          value={formData.title}
+                          onChange={(e) =>
+                            handleInputChange("title", e.target.value)
+                          }
+                          className={`h-12 text-base ${
+                            errors.title ? "border-destructive" : ""
+                          }`}
+                        />
+                        {errors.title && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-sm text-destructive flex items-center gap-1"
+                          >
+                            {errors.title}
+                          </motion.p>
+                        )}
+                      </div>
 
-              {/* Category Card */}
-              <Card className="border-0 shadow-lg bg-card/50 backdrop-blur-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <Package className="h-5 w-5 text-primary" />
-                    Category
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <Label className="text-sm font-semibold">Category *</Label>
-                    <Select
-                      value={formData.category}
-                      onValueChange={(value) =>
-                        handleInputChange("category", value)
-                      }
-                    >
-                      <SelectTrigger
-                        className={`h-12 ${
-                          errors.category ? "border-destructive" : ""
-                        }`}
-                      >
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category} value={category}>
-                            {category}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    {errors.category && (
-                      <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-sm text-destructive"
-                      >
-                        {errors.category}
-                      </motion.p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+                      {/* Category */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold flex items-center gap-2">
+                          <Package className="h-4 w-4" />
+                          Category *
+                        </Label>
+                        <Select
+                          value={formData.category}
+                          onValueChange={(value) =>
+                            handleInputChange("category", value)
+                          }
+                        >
+                          <SelectTrigger
+                            className={`h-12 ${
+                              errors.category ? "border-destructive" : ""
+                            }`}
+                          >
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {categories.map((category) => (
+                              <SelectItem key={category} value={category}>
+                                {category}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {errors.category && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-sm text-destructive"
+                          >
+                            {errors.category}
+                          </motion.p>
+                        )}
+                      </div>
 
-              {/* Pricing Card */}
-              <Card className="border-0 shadow-lg bg-card/50 backdrop-blur-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <DollarSign className="h-5 w-5 text-primary" />
-                    Pricing
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <Label htmlFor="price" className="text-sm font-semibold">
-                      Price * ($)
-                    </Label>
-                    <div className="relative">
-                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="price"
-                        type="number"
-                        placeholder="0.00"
-                        step="0.01"
-                        value={formData.price}
+                      {/* Price */}
+                      <div className="space-y-2">
+                        <Label
+                          htmlFor="price"
+                          className="text-sm font-semibold flex items-center gap-2"
+                        >
+                          <DollarSign className="h-4 w-4" />
+                          Price * (₹)
+                        </Label>
+                        <div className="relative">
+                          <span className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground font-bold">
+                            ₹
+                          </span>
+                          <Input
+                            id="price"
+                            type="number"
+                            placeholder="0.00"
+                            step="0.01"
+                            value={formData.price}
+                            onChange={(e) =>
+                              handleInputChange("price", e.target.value)
+                            }
+                            className={`h-12 pl-10 text-base ${
+                              errors.price ? "border-destructive" : ""
+                            }`}
+                          />
+                        </div>
+                        {errors.price && (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-sm text-destructive"
+                          >
+                            {errors.price}
+                          </motion.p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="description"
+                        className="text-sm font-semibold flex items-center gap-2"
+                      >
+                        <FileText className="h-4 w-4" />
+                        Description *
+                      </Label>
+                      <Textarea
+                        id="description"
+                        placeholder="Describe your item's condition, features, and any relevant details..."
+                        rows={5}
+                        value={formData.description}
                         onChange={(e) =>
-                          handleInputChange("price", e.target.value)
+                          handleInputChange("description", e.target.value)
                         }
-                        className={`h-12 pl-10 text-base ${
-                          errors.price ? "border-destructive" : ""
+                        className={`text-base resize-none ${
+                          errors.description ? "border-destructive" : ""
                         }`}
                       />
-                    </div>
-                    {errors.price && (
-                      <motion.p
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-sm text-destructive"
-                      >
-                        {errors.price}
-                      </motion.p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Image Upload Card */}
-              <Card className="border-0 shadow-lg bg-card/50 backdrop-blur-sm">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-2 text-xl">
-                    <ImageIcon className="h-5 w-5 text-primary" />
-                    Product Images
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Upload Area */}
-                  <div className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary/50 transition-colors">
-                    <div className="flex flex-col items-center space-y-4">
-                      <div className="bg-primary/10 rounded-full p-4">
-                        <Upload className="h-8 w-8 text-primary" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-foreground mb-2">
-                          Upload Product Images
-                        </h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Drag and drop images here, or click to browse. Upload
-                          up to 5 high-quality photos.
-                        </p>
-                        <input
-                          type="file"
-                          multiple
-                          accept="image/*"
-                          onChange={handleImageUpload}
-                          className="hidden"
-                          id="image-upload"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="lg"
-                          onClick={() =>
-                            document.getElementById("image-upload")?.click()
-                          }
-                          className="bg-background hover:bg-accent"
+                      {errors.description && (
+                        <motion.p
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-sm text-destructive"
                         >
-                          <Plus className="h-4 w-4 mr-2" />
-                          Choose Images
-                        </Button>
-                      </div>
+                          {errors.description}
+                        </motion.p>
+                      )}
                     </div>
                   </div>
 
-                  {/* Image Preview */}
-                  {images.length > 0 && (
-                    <div className="space-y-4">
-                      <Separator />
-                      <div>
-                        <h4 className="font-semibold text-foreground mb-3">
-                          Uploaded Images ({images.length}/5)
-                        </h4>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                          {images.map((image, index) => (
-                            <motion.div
-                              key={index}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              className="relative aspect-square rounded-lg overflow-hidden border border-border group"
-                            >
-                              <img
-                                src={image || "/placeholder.svg"}
-                                alt={`Preview ${index + 1}`}
-                                className="w-full h-full object-cover"
-                              />
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                size="icon"
-                                className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
-                                onClick={() => removeImage(index)}
-                              >
-                                <X className="h-3 w-3" />
-                              </Button>
-                              <Badge className="absolute bottom-2 left-2 text-xs">
-                                {index === 0 ? "Main" : `${index + 1}`}
-                              </Badge>
-                            </motion.div>
-                          ))}
+                  {/* Image Upload Section */}
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-2 pb-2 border-b border-border/50">
+                      <ImageIcon className="h-5 w-5 text-primary" />
+                      <h3 className="text-lg font-semibold">Product Images</h3>
+                    </div>
+
+                    {/* Upload Area */}
+                    <div className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary/50 transition-colors">
+                      <div className="flex flex-col items-center space-y-4">
+                        <div className="bg-primary/10 rounded-full p-4">
+                          <Upload className="h-8 w-8 text-primary" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground mb-2">
+                            Upload Product Images
+                          </h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Drag and drop images here, or click to browse.
+                            Upload up to 5 high-quality photos.
+                          </p>
+                          <input
+                            type="file"
+                            multiple
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="hidden"
+                            id="image-upload"
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="lg"
+                            onClick={() =>
+                              document.getElementById("image-upload")?.click()
+                            }
+                            className="bg-background hover:bg-accent"
+                          >
+                            <Plus className="h-4 w-4 mr-2" />
+                            Choose Images
+                          </Button>
                         </div>
                       </div>
                     </div>
-                  )}
+
+                    {/* Image Preview */}
+                    {images.length > 0 && (
+                      <div className="space-y-4">
+                        <Separator />
+                        <div>
+                          <h4 className="font-semibold text-foreground mb-3">
+                            Uploaded Images ({images.length}/5)
+                          </h4>
+                          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                            {images.map((image, index) => (
+                              <motion.div
+                                key={index}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="relative aspect-square rounded-lg overflow-hidden border border-border group"
+                              >
+                                <img
+                                  src={image || "/placeholder.svg"}
+                                  alt={`Preview ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                />
+                                <Button
+                                  type="button"
+                                  variant="destructive"
+                                  size="icon"
+                                  className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  onClick={() => removeImage(index)}
+                                >
+                                  <X className="h-3 w-3" />
+                                </Button>
+                                <Badge className="absolute bottom-2 left-2 text-xs">
+                                  {index === 0 ? "Main" : `${index + 1}`}
+                                </Badge>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
 

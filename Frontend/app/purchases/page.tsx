@@ -161,12 +161,12 @@ export default function PurchasesPage() {
                     Total Spent
                   </p>
                   <p className="text-2xl font-bold text-foreground">
-                    ${totalSpent.toFixed(2)}
+                    ₹{totalSpent.toFixed(2)}
                   </p>
                 </div>
                 <div className="h-8 w-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
                   <span className="text-green-600 dark:text-green-400 font-bold">
-                    $
+                    ₹
                   </span>
                 </div>
               </div>

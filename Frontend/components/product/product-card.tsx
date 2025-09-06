@@ -101,11 +101,11 @@ export function ProductCard({
 
             <div className="flex items-center space-x-2">
               <span className="font-bold text-lg text-foreground">
-                ${product.price}
+                ₹{product.price}
               </span>
               {product.originalPrice && (
                 <span className="text-sm text-muted-foreground line-through">
-                  ${product.originalPrice}
+                  ₹{product.originalPrice}
                 </span>
               )}
             </div>
