@@ -81,7 +81,7 @@ export const addToCart = async (req, res) => {
 
       return res
         .status(201)
-        .json(new ApiResponse(201, "Item added to cart", { item: newItem }));
+        .json(new ApiResponse(201, { item: newItem }, "Item added to cart"));
     }
   } catch (err) {
     console.error("Error adding to cart:", err);
@@ -120,10 +120,9 @@ export const getCart = async (req, res) => {
       return res
         .status(200)
         .json(
-          new ApiResponse(200,{
-              cart: { items: [], total: 0 },
-            }, "Cart is empty",
-          )
+          new ApiResponse(200, {
+            cart: { items: [], total: 0 },
+          }, "Cart is empty")
         );
     }
 
@@ -194,7 +193,7 @@ export const updateCartItem = async (req, res) => {
 
       return res
         .status(200)
-        .json(new ApiResponse(200, "Item removed from cart"));
+        .json(new ApiResponse(200, null, "Item removed from cart"));
     } else {
       // Update quantity
       const updatedItem = await prisma.cartItem.update({
@@ -205,7 +204,7 @@ export const updateCartItem = async (req, res) => {
 
       return res
         .status(200)
-        .json(new ApiResponse(200, "Cart item updated", { item: updatedItem }));
+        .json(new ApiResponse(200, { item: updatedItem }, "Cart item updated"));
     }
   } catch (err) {
     console.error("Error updating cart item:", err);
@@ -243,7 +242,7 @@ export const removeFromCart = async (req, res) => {
       where: { id: cartItem.id },
     });
 
-    return res.status(200).json(new ApiResponse(200, "Item removed from cart"));
+    return res.status(200).json(new ApiResponse(200, null, "Item removed from cart"));
   } catch (err) {
     console.error("Error removing from cart:", err);
     return res
@@ -273,7 +272,7 @@ export const clearCart = async (req, res) => {
 
     return res
       .status(200)
-      .json(new ApiResponse(200, "Cart cleared successfully"));
+      .json(new ApiResponse(200, null, "Cart cleared successfully"));
   } catch (err) {
     console.error("Error clearing cart:", err);
     return res

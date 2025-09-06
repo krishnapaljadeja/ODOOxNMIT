@@ -1,22 +1,59 @@
 "use client"
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { ShoppingCart, Truck, Shield } from "lucide-react"
+import { ShoppingCart, Truck, Shield, CheckCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { useCart } from "./cart-context"
+import { useRouter } from "next/navigation"
+import { toast } from "@/hooks/use-toast"
 
 interface CartSummaryProps {
-  onCheckout?: () => void
-  isCheckoutPage?: boolean
+  // No props needed - direct order placement
 }
 
-export function CartSummary({ onCheckout, isCheckoutPage = false }: CartSummaryProps) {
-  const { state } = useCart()
+export function CartSummary({}: CartSummaryProps) {
+  const { state, processPurchase } = useCart()
+  const router = useRouter()
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const shipping = state.total >= 50 ? 0 : 9.99
   const tax = state.total * 0.08 // 8% tax
   const finalTotal = state.total + shipping + tax
+
+  const handlePlaceOrder = async () => {
+    setIsProcessing(true)
+    
+    try {
+      const result = await processPurchase()
+      
+      if (result.success) {
+        toast({
+          title: "Order Placed Successfully!",
+          description: `Your order has been placed. Order ID: ${result.purchaseId}`,
+        })
+        
+        // Redirect to order confirmation or purchases page
+        router.push(`/purchases/${result.purchaseId}`)
+      } else {
+        toast({
+          title: "Order Failed",
+          description: result.error || "Failed to place order",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error("Error placing order:", error)
+      toast({
+        title: "Order Failed",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      })
+    } finally {
+      setIsProcessing(false)
+    }
+  }
 
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
@@ -63,19 +100,27 @@ export function CartSummary({ onCheckout, isCheckoutPage = false }: CartSummaryP
             </div>
           )}
 
-          {/* Checkout Button */}
-          {!isCheckoutPage && (
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                onClick={onCheckout}
-                disabled={state.items.length === 0}
-                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3"
-                size="lg"
-              >
-                Proceed to Checkout
-              </Button>
-            </motion.div>
-          )}
+          {/* Place Order Button */}
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Button
+              onClick={handlePlaceOrder}
+              disabled={state.items.length === 0 || isProcessing}
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3"
+              size="lg"
+            >
+              {isProcessing ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Placing Order...
+                </>
+              ) : (
+                <>
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Place Order
+                </>
+              )}
+            </Button>
+          </motion.div>
 
           {/* Security Notice */}
           <div className="flex items-center justify-center text-xs text-muted-foreground pt-2">

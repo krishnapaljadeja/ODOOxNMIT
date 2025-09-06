@@ -1,5 +1,6 @@
 "use client";
 import { CartService } from "@/lib/cart-service";
+import { PurchaseService } from "@/lib/purchase-service";
 import type React from "react";
 import { createContext, useContext, useReducer, useEffect } from "react";
 
@@ -48,6 +49,7 @@ const CartContext = createContext<{
     updateCartItemQuantity: (productId: string, quantity: number) => Promise<void>;
     removeFromCart: (productId: string) => Promise<void>;
     clearCart: () => Promise<void>;
+    processPurchase: () => Promise<{ success: boolean; purchaseId?: string; error?: string }>;
 } | null>(null);
 
 const cartReducer = (state: CartState, action: CartAction): CartState => {
@@ -269,6 +271,41 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
     };
 
+    const processPurchase = async () => {
+        try {
+            console.log("Processing purchase...");
+            
+            // Check if user is authenticated
+            const isAuthenticated = localStorage.getItem("ecofinds-authenticated") === "true";
+            if (!isAuthenticated) {
+                return { success: false, error: "User must be logged in to place an order" };
+            }
+
+            // Check if cart has items
+            if (state.items.length === 0) {
+                return { success: false, error: "Cart is empty" };
+            }
+
+            // Process the purchase
+            const response = await PurchaseService.processPurchase();
+            console.log("Purchase processed:", response);
+
+            // Clear the cart after successful purchase
+            dispatch({ type: "CLEAR_CART" });
+
+            return { 
+                success: true, 
+                purchaseId: response.message.purchase.id 
+            };
+        } catch (error: any) {
+            console.error("Failed to process purchase:", error);
+            return { 
+                success: false, 
+                error: error.message || "Failed to process purchase" 
+            };
+        }
+    };
+
     // Save cart to localStorage whenever it changes
     useEffect(() => {
         localStorage.setItem("ecofinds-cart", JSON.stringify(state.items));
@@ -281,7 +318,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             addToCart, 
             updateCartItemQuantity, 
             removeFromCart, 
-            clearCart 
+            clearCart,
+            processPurchase
         }}>
             {children}
         </CartContext.Provider>

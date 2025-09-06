@@ -13,9 +13,7 @@ export default function CartPage() {
   const { state } = useCart()
   const router = useRouter()
 
-  const handleCheckout = () => {
-    router.push("/checkout")
-  }
+  // Removed checkout navigation - orders are now placed directly from cart
 
   return (
     <div className="min-h-screen bg-background">
@@ -55,7 +53,7 @@ export default function CartPage() {
 
               {/* Cart Summary */}
               <div className="lg:col-span-1">
-                <CartSummary onCheckout={handleCheckout} />
+                <CartSummary />
               </div>
             </div>
           ) : (

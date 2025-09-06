@@ -78,7 +78,7 @@ export class CartService {
                 API_ENDPOINTS.CART.ADD,
                 itemData
             );
-
+            console.log("CartService: Response:", API_ENDPOINTS.CART.ADD);
             console.log("CartService: Received response:", response);
 
             // ApiResponse structure: { statusCode, message, data }
