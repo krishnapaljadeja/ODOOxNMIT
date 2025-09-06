@@ -53,8 +53,8 @@ export function ProductFilters({
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const backendCategories = await ProductService.getCategories();
-        setCategories(["All", ...backendCategories]);
+        const response = await ProductService.getCategories();
+        setCategories(["All", ...response.data.categories]);
       } catch (error) {
         console.error("Failed to fetch categories:", error);
         // Fallback to default categories if API fails

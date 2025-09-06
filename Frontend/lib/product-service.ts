@@ -1,58 +1,6 @@
 import { ApiService, API_ENDPOINTS } from "./api";
 
-// Backend response types
-interface BackendProductResponse {
-  statusCode: number;
-  data: string; // "Product retrieved successfully"
-  message: {
-    product: Product;
-  };
-  success: boolean;
-}
-
-interface BackendProductsResponse {
-  statusCode: number;
-  data: string; // "Products retrieved successfully"
-  message: {
-    products: Product[];
-    pagination: {
-      currentPage: number;
-      totalPages: number;
-      totalCount: number;
-      hasNext: boolean;
-      hasPrev: boolean;
-    };
-  };
-  success: boolean;
-}
-
-interface BackendCategoriesResponse {
-  statusCode: number;
-  data: string; // "Categories retrieved successfully"
-  message: {
-    categories: string[];
-  };
-  success: boolean;
-}
-
-// Product types
-export interface Product {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  imageUrl?: string;
-  images?: string[];
-  sellerId: string;
-  createdAt: string;
-  updatedAt: string;
-  seller: {
-    id: string;
-    username: string;
-  };
-}
-
+// Types for product operations
 export interface CreateProductData {
   title: string;
   description: string;
@@ -69,131 +17,152 @@ export interface ProductFilters {
   search?: string;
   minPrice?: number;
   maxPrice?: number;
-  sortBy?: "newest" | "oldest" | "price-low" | "price-high";
+  sortBy?: string;
 }
 
-export interface ProductListResponse {
-  products: Product[];
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalCount: number;
-    hasNext: boolean;
-    hasPrev: boolean;
+export interface Product {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  price: number;
+  imageUrl?: string;
+  images: string[];
+  sellerId: string;
+  createdAt: string;
+  updatedAt: string;
+  seller: {
+    id: string;
+    username: string;
   };
 }
 
-// Product Service Class
+export interface ProductResponse {
+  statusCode: number;
+  data: string; // "Product created successfully" or similar
+  message: {
+    product: Product;
+  };
+  success: boolean;
+}
+
+export interface ProductsListResponse {
+  statusCode: number;
+  data: string; // "Products retrieved successfully"
+  message: {
+    products: Product[];
+    pagination: {
+      currentPage: number;
+      totalPages: number;
+      totalCount: number;
+      hasNext: boolean;
+      hasPrev: boolean;
+    };
+  };
+  success: boolean;
+}
+
+export interface CategoriesResponse {
+  statusCode: number;
+  message: string;
+  data: {
+    categories: string[];
+  };
+  success: boolean;
+}
+
+// Product service class
 export class ProductService {
-  // Get all products with filters
-  static async getProducts(
-    filters: ProductFilters = {}
-  ): Promise<ProductListResponse> {
-    try {
-      const params = new URLSearchParams();
+  // Create a new product
+  static async createProduct(
+    productData: CreateProductData
+  ): Promise<ProductResponse> {
+    return ApiService.post<ProductResponse>(
+      API_ENDPOINTS.PRODUCTS.CREATE,
+      productData
+    );
+  }
 
-      if (filters.page) params.append("page", filters.page.toString());
-      if (filters.limit) params.append("limit", filters.limit.toString());
-      if (filters.category) params.append("category", filters.category);
-      if (filters.search) params.append("search", filters.search);
-      if (filters.minPrice)
-        params.append("minPrice", filters.minPrice.toString());
-      if (filters.maxPrice)
-        params.append("maxPrice", filters.maxPrice.toString());
-      if (filters.sortBy) params.append("sortBy", filters.sortBy);
+  // Get all products with optional filters
+  static async getProducts(params?: {
+    page?: number;
+    limit?: number;
+    category?: string;
+    search?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    sortBy?: string;
+  }): Promise<ProductsListResponse> {
+    const queryParams = new URLSearchParams();
 
-      const queryString = params.toString();
-      const url = queryString
-        ? `${API_ENDPOINTS.PRODUCTS.LIST}?${queryString}`
-        : API_ENDPOINTS.PRODUCTS.LIST;
+    if (params?.page) queryParams.append("page", params.page.toString());
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+    if (params?.category) queryParams.append("category", params.category);
+    if (params?.search) queryParams.append("search", params.search);
+    if (params?.minPrice)
+      queryParams.append("minPrice", params.minPrice.toString());
+    if (params?.maxPrice)
+      queryParams.append("maxPrice", params.maxPrice.toString());
+    if (params?.sortBy) queryParams.append("sortBy", params.sortBy);
 
-      const response = await ApiService.get<BackendProductsResponse>(url);
-      return response.message;
-    } catch (error: any) {
-      throw new Error(error.message || "Failed to fetch products");
-    }
+    const url = queryParams.toString()
+      ? `${API_ENDPOINTS.PRODUCTS.LIST}?${queryParams.toString()}`
+      : API_ENDPOINTS.PRODUCTS.LIST;
+
+    return ApiService.get<ProductsListResponse>(url);
   }
 
   // Get single product by ID
-  static async getProductById(id: string): Promise<Product> {
-    try {
-      const response = await ApiService.get<BackendProductResponse>(
-        API_ENDPOINTS.PRODUCTS.GET(id)
-      );
-      return response.message.product;
-    } catch (error: any) {
-      throw new Error(error.message || "Failed to fetch product");
-    }
+  static async getProductById(id: string): Promise<ProductResponse> {
+    return ApiService.get<ProductResponse>(API_ENDPOINTS.PRODUCTS.GET(id));
   }
 
-  // Create new product
-  static async createProduct(productData: CreateProductData): Promise<Product> {
-    try {
-      const response = await ApiService.post<BackendProductResponse>(
-        API_ENDPOINTS.PRODUCTS.CREATE,
-        productData
-      );
-      return response.message.product;
-    } catch (error: any) {
-      throw new Error(error.message || "Failed to create product");
-    }
+  // Get user's own products
+  static async getMyProducts(params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ProductsListResponse> {
+    const queryParams = new URLSearchParams();
+
+    if (params?.page) queryParams.append("page", params.page.toString());
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+    const url = queryParams.toString()
+      ? `${API_ENDPOINTS.PRODUCTS.MY_LISTINGS}?${queryParams.toString()}`
+      : API_ENDPOINTS.PRODUCTS.MY_LISTINGS;
+
+    return ApiService.get<ProductsListResponse>(url);
   }
 
   // Update product
   static async updateProduct(
     id: string,
     productData: Partial<CreateProductData>
-  ): Promise<Product> {
-    try {
-      const response = await ApiService.put<BackendProductResponse>(
-        API_ENDPOINTS.PRODUCTS.UPDATE(id),
-        productData
-      );
-      return response.message.product;
-    } catch (error: any) {
-      throw new Error(error.message || "Failed to update product");
-    }
+  ): Promise<ProductResponse> {
+    return ApiService.put<ProductResponse>(
+      API_ENDPOINTS.PRODUCTS.UPDATE(id),
+      productData
+    );
   }
 
   // Delete product
-  static async deleteProduct(id: string): Promise<void> {
-    try {
-      await ApiService.delete(API_ENDPOINTS.PRODUCTS.DELETE(id));
-    } catch (error: any) {
-      throw new Error(error.message || "Failed to delete product");
-    }
+  static async deleteProduct(
+    id: string
+  ): Promise<{ statusCode: number; message: string; success: boolean }> {
+    return ApiService.delete<{
+      statusCode: number;
+      message: string;
+      success: boolean;
+    }>(API_ENDPOINTS.PRODUCTS.DELETE(id));
   }
 
-  // Get user's own products
-  static async getMyProducts(
-    filters: { page?: number; limit?: number } = {}
-  ): Promise<ProductListResponse> {
-    try {
-      const params = new URLSearchParams();
-      if (filters.page) params.append("page", filters.page.toString());
-      if (filters.limit) params.append("limit", filters.limit.toString());
-
-      const queryString = params.toString();
-      const url = queryString
-        ? `${API_ENDPOINTS.PRODUCTS.MY_LISTINGS}?${queryString}`
-        : API_ENDPOINTS.PRODUCTS.MY_LISTINGS;
-
-      const response = await ApiService.get<BackendProductsResponse>(url);
-      return response.message;
-    } catch (error: any) {
-      throw new Error(error.message || "Failed to fetch your products");
-    }
-  }
-
-  // Get product categories
-  static async getCategories(): Promise<string[]> {
-    try {
-      const response = await ApiService.get<BackendCategoriesResponse>(
-        API_ENDPOINTS.PRODUCTS.CATEGORIES
-      );
-      return response.message.categories;
-    } catch (error: any) {
-      throw new Error(error.message || "Failed to fetch categories");
-    }
+  // Get available categories
+  static async getCategories(): Promise<CategoriesResponse> {
+    return ApiService.get<CategoriesResponse>(
+      API_ENDPOINTS.PRODUCTS.CATEGORIES
+    );
   }
 }
+
+// Export the service as default
+export default ProductService;

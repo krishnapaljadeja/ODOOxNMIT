@@ -65,13 +65,13 @@ export function ProductGrid({
       const response = await ProductService.getProducts(filters);
 
       if (append) {
-        setProducts((prev) => [...prev, ...response.products]);
+        setProducts((prev) => [...prev, ...response.message.products]);
       } else {
-        setProducts(response.products);
+        setProducts(response.message.products);
       }
 
-      setFilteredProducts(response.products);
-      setHasMore(response.pagination.hasNext);
+      setFilteredProducts(response.message.products);
+      setHasMore(response.message.pagination?.hasNext);
     } catch (err: any) {
       setError(err.message || "Failed to load products");
       console.error("Error fetching products:", err);
@@ -102,12 +102,12 @@ export function ProductGrid({
         id: product.id,
         title: product.title,
         price: product.price,
-        originalPrice: product.originalPrice,
+        originalPrice: product.price * 1.2, // Estimate original price
         category: product.category,
-        condition: product.condition,
-        image: product.image,
-        seller: product.seller,
-        location: product.location,
+        condition: "Good", // Default condition since backend doesn't have this field
+        image: product.imageUrl || product.images?.[0] || "/placeholder.svg",
+        seller: product.seller.username,
+        location: "Online", // Default location since backend doesn't have this field
       });
     }
   };
@@ -136,7 +136,7 @@ export function ProductGrid({
           groupKey = product.category;
           break;
         case "condition":
-          groupKey = product.condition;
+          groupKey = "Good"; // Default condition since backend doesn't have this field
           break;
         case "price":
           if (product.price < 100) groupKey = "Under $100";
@@ -252,7 +252,7 @@ export function ProductGrid({
       )}
 
       {/* Empty State */}
-      {!isLoading && !error && displayedProducts.length === 0 && (
+      {!isLoading && !error && displayedProducts?.length === 0 && (
         <div className="text-center py-12">
           <div className="max-w-md mx-auto">
             <div className="bg-muted rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
