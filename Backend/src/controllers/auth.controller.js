@@ -261,6 +261,7 @@ export const getProfile = async (req, res) => {
 
 // Update current user's profile (authenticated)
 export const updateProfile = async (req, res) => {
+  console.log('hger')
   try {
     const userId = req.user.id; // From authentication middleware
     const { username, email } = req.body;
