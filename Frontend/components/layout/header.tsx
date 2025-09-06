@@ -1,45 +1,55 @@
-"use client"
-import type React from "react"
-import { useState } from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { Search, User, ShoppingCart, Menu, X, Leaf, Heart, Package } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ThemeToggle } from "@/components/theme-toggle"
+"use client";
+import type React from "react";
+import { useState } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  Search,
+  User,
+  ShoppingCart,
+  Menu,
+  X,
+  Leaf,
+  Heart,
+  Package,
+  List,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ThemeToggle } from "@/components/theme-toggle";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useCart } from "@/components/cart/cart-context"
-import { useWishlist } from "@/components/wishlist/wishlist-context"
-import { useAuth } from "@/components/auth/auth-context"
+} from "@/components/ui/dropdown-menu";
+import { useCart } from "@/components/cart/cart-context";
+import { useWishlist } from "@/components/wishlist/wishlist-context";
+import { useAuth } from "@/components/auth/auth-context";
 
 interface HeaderProps {
-  onSearch?: (query: string) => void
+  onSearch?: (query: string) => void;
 }
 
 export function Header({ onSearch }: HeaderProps) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { state: cartState } = useCart()
-  const { wishlistItems } = useWishlist()
-  const { user, logout } = useAuth()
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { state: cartState } = useCart();
+  const { wishlistItems } = useWishlist();
+  const { user, logout } = useAuth();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setSearchQuery(value)
-    onSearch?.(value)
-  }
+    const value = e.target.value;
+    setSearchQuery(value);
+    onSearch?.(value);
+  };
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    onSearch?.(searchQuery)
-  }
+    e.preventDefault();
+    onSearch?.(searchQuery);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
@@ -50,7 +60,9 @@ export function Header({ onSearch }: HeaderProps) {
             <div className="bg-primary rounded-full p-2">
               <Leaf className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-heading text-xl font-bold text-foreground">EcoFinds</span>
+            <span className="font-heading text-xl font-bold text-foreground">
+              EcoFinds
+            </span>
           </Link>
 
           {/* Desktop Search Bar */}
@@ -107,7 +119,10 @@ export function Header({ onSearch }: HeaderProps) {
                     aria-label="Open user menu"
                   >
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.avatar || "/placeholder-user.jpg"} alt={user?.name || "User"} />
+                      <AvatarImage
+                        src={user?.avatar || "/placeholder-user.jpg"}
+                        alt={user?.name || "User"}
+                      />
                       <AvatarFallback>
                         <User className="h-4 w-4" />
                       </AvatarFallback>
@@ -119,15 +134,19 @@ export function Header({ onSearch }: HeaderProps) {
                     <Link href="/dashboard">Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/orders">
+                    <Link href="/my-listings">
+                      <List className="h-4 w-4 mr-2" />
+                      My Listings
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/purchases">
                       <Package className="h-4 w-4 mr-2" />
                       Orders
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={logout}>
-                    Logout
-                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
@@ -140,7 +159,11 @@ export function Header({ onSearch }: HeaderProps) {
             className="md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
           </Button>
         </div>
 
@@ -169,7 +192,12 @@ export function Header({ onSearch }: HeaderProps) {
               <div className="flex items-center space-x-4">
                 <ThemeToggle />
 
-                <Button variant="ghost" size="icon" className="relative" asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative"
+                  asChild
+                >
                   <Link href="/wishlist">
                     <Heart className="h-5 w-5" />
                     {wishlistItems.length > 0 && (
@@ -180,7 +208,12 @@ export function Header({ onSearch }: HeaderProps) {
                   </Link>
                 </Button>
 
-                <Button variant="ghost" size="icon" className="relative" asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="relative"
+                  asChild
+                >
                   <Link href="/cart">
                     <ShoppingCart className="h-5 w-5" />
                     {cartState.items.length > 0 && (
@@ -193,7 +226,13 @@ export function Header({ onSearch }: HeaderProps) {
               </div>
               <div className="flex items-center space-x-2">
                 <Button variant="ghost" size="sm" asChild>
-                  <Link href="/orders">
+                  <Link href="/my-listings">
+                    <List className="h-4 w-4 mr-2" />
+                    My Listings
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/purchases">
                     <Package className="h-4 w-4 mr-2" />
                     Orders
                   </Link>
@@ -210,5 +249,5 @@ export function Header({ onSearch }: HeaderProps) {
         )}
       </div>
     </header>
-  )
+  );
 }

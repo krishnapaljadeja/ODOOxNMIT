@@ -1,79 +1,112 @@
-"use client"
-import { motion } from "framer-motion"
-import { Heart, ShoppingCart } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { useWishlist } from "@/components/wishlist/wishlist-context"
+"use client";
+import { motion } from "framer-motion";
+import { Heart, ShoppingCart } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useWishlist } from "@/components/wishlist/wishlist-context";
 
 interface Product {
-  id: string
-  title: string
-  price: number
-  originalPrice?: number
-  category: string
-  condition: string
-  image: string
-  seller: string
-  location: string
-  isLiked?: boolean
+  id: string;
+  title: string;
+  price: number;
+  originalPrice?: number;
+  category: string;
+  condition: string;
+  image: string;
+  seller: string;
+  location: string;
+  isLiked?: boolean;
 }
 
 interface ProductCardProps {
-  product: Product
-  onAddToCart?: (productId: string) => void
-  onToggleLike?: (productId: string) => void
+  product: Product;
+  onAddToCart?: (productId: string) => void;
+  onToggleLike?: (productId: string) => void;
 }
 
-export function ProductCard({ product, onAddToCart, onToggleLike }: ProductCardProps) {
-  const { isInWishlist } = useWishlist()
-  const isLiked = isInWishlist(product.id)
-  
+export function ProductCard({
+  product,
+  onAddToCart,
+  onToggleLike,
+}: ProductCardProps) {
+  const { isInWishlist } = useWishlist();
+  const isLiked = isInWishlist(product.id);
+
   const discountPercentage = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
-    : 0
+    ? Math.round(
+        ((product.originalPrice - product.price) / product.originalPrice) * 100
+      )
+    : 0;
 
   return (
-    <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.2 }} className="group">
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
+      className="group"
+    >
       <Card className="overflow-hidden border-border hover:shadow-lg transition-shadow duration-200">
-        <div className="relative aspect-square overflow-hidden">
-          <img
-            src={product.image || "/placeholder.svg"}
-            alt={product.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-          />
+        <Link href={`/product/${product.id}`}>
+          <div className="relative aspect-square overflow-hidden cursor-pointer">
+            <img
+              src={product.image || "/placeholder.svg"}
+              alt={product.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+            />
 
-          {/* Discount Badge */}
-          {discountPercentage > 0 && (
-            <Badge className="absolute top-2 left-2 bg-destructive text-destructive-foreground">
-              -{discountPercentage}%
+            {/* Discount Badge */}
+            {discountPercentage > 0 && (
+              <Badge className="absolute top-2 left-2 bg-destructive text-destructive-foreground">
+                -{discountPercentage}%
+              </Badge>
+            )}
+
+            {/* Condition Badge */}
+            <Badge className="absolute top-2 right-2">
+              {product.condition}
             </Badge>
-          )}
 
-          {/* Condition Badge */}
-          <Badge className="absolute top-2 right-2">{product.condition}</Badge>
-
-          {/* Like Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute bottom-2 right-2 bg-card/90 backdrop-blur-sm hover:bg-card"
-            onClick={() => onToggleLike?.(product.id)}
-          >
-            <Heart className={`h-4 w-4 ${isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
-          </Button>
-        </div>
+            {/* Like Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute bottom-2 right-2 bg-card/90 backdrop-blur-sm hover:bg-card"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onToggleLike?.(product.id);
+              }}
+            >
+              <Heart
+                className={`h-4 w-4 ${
+                  isLiked
+                    ? "fill-red-500 text-red-500"
+                    : "text-muted-foreground"
+                }`}
+              />
+            </Button>
+          </div>
+        </Link>
 
         <CardContent className="p-4">
           <div className="space-y-2">
-            <div className="flex items-start justify-between">
-              <h3 className="font-medium text-foreground line-clamp-2 text-sm">{product.title}</h3>
-            </div>
+            <Link href={`/product/${product.id}`}>
+              <div className="flex items-start justify-between cursor-pointer">
+                <h3 className="font-medium text-foreground line-clamp-2 text-sm hover:text-primary transition-colors">
+                  {product.title}
+                </h3>
+              </div>
+            </Link>
 
             <div className="flex items-center space-x-2">
-              <span className="font-bold text-lg text-foreground">${product.price}</span>
+              <span className="font-bold text-lg text-foreground">
+                ${product.price}
+              </span>
               {product.originalPrice && (
-                <span className="text-sm text-muted-foreground line-through">${product.originalPrice}</span>
+                <span className="text-sm text-muted-foreground line-through">
+                  ${product.originalPrice}
+                </span>
               )}
             </div>
 
@@ -83,7 +116,11 @@ export function ProductCard({ product, onAddToCart, onToggleLike }: ProductCardP
             </div>
 
             <Button
-              onClick={() => onAddToCart?.(product.id)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onAddToCart?.(product.id);
+              }}
               className="w-full mt-3 bg-primary hover:bg-primary/90 text-primary-foreground"
               size="sm"
             >
@@ -94,5 +131,5 @@ export function ProductCard({ product, onAddToCart, onToggleLike }: ProductCardP
         </CardContent>
       </Card>
     </motion.div>
-  )
+  );
 }

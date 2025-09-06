@@ -226,6 +226,14 @@ export const getMyProducts = async (req, res) => {
     const [products, totalCount] = await Promise.all([
       prisma.product.findMany({
         where: { sellerId },
+        include: {
+          seller: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
         orderBy: { createdAt: "desc" },
         skip,
         take: limitNum,
@@ -259,7 +267,7 @@ export const getMyProducts = async (req, res) => {
 export const updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, category, price, imageUrl } = req.body;
+    const { title, description, category, price, imageUrl, images } = req.body;
     const userId = req.user.id; // From authentication middleware
 
     // Check if product exists and user owns it
@@ -303,6 +311,7 @@ export const updateProduct = async (req, res) => {
     if (category) updateData.category = category;
     if (price) updateData.price = parseFloat(price);
     if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
+    if (images !== undefined) updateData.images = images;
 
     const updatedProduct = await prisma.product.update({
       where: { id },
