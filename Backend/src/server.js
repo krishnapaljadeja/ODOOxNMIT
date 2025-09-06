@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import purchaseRoutes from "./routes/purchase.routes.js";
+import imageRoutes from "./routes/image.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import isAuthenticated from "./middlewares/Authentication.js";
@@ -58,6 +59,7 @@ app.use("/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/purchases", purchaseRoutes);
+app.use("/api/images", imageRoutes);
 
 // Health check endpoint
 app.get("/api/health", (req, res) => {

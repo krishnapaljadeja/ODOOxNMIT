@@ -30,7 +30,8 @@ model Product {
   description String
   category    String
   price       Float
-  imageUrl    String?
+  imageUrl    String?  // Keep for backward compatibility
+  images      String[] // Array of image URLs
   sellerId    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

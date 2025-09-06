@@ -6,7 +6,7 @@ import { validateCategory } from "../config/categories.js";
 // Create a new product
 export const createProduct = async (req, res) => {
   try {
-    const { title, description, category, price, imageUrl } = req.body;
+    const { title, description, category, price, imageUrl, images } = req.body;
     const sellerId = req.user.id; // From authentication middleware
 
     // Input validation
@@ -40,6 +40,15 @@ export const createProduct = async (req, res) => {
         .json(new ApiError(400, "Price must be greater than 0"));
     }
 
+    // Process images
+    let productImages = [];
+    if (images && Array.isArray(images)) {
+      productImages = images;
+    } else if (imageUrl) {
+      // Backward compatibility - single image
+      productImages = [imageUrl];
+    }
+
     // Create product
     const product = await prisma.product.create({
       data: {
@@ -47,7 +56,8 @@ export const createProduct = async (req, res) => {
         description,
         category,
         price: parseFloat(price),
-        imageUrl: imageUrl || null,
+        imageUrl: productImages[0] || null, // First image as main image
+        images: productImages,
         sellerId,
       },
       include: {
